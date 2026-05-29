@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Serene Closet",
+    "slug": "serene-closet",
+    "version": "1.0.0",
+    "sdkVersion": "56.0.0",
+    "platforms": ["ios", "android"],
+    "entryPoint": "node_modules/expo/AppEntry.js",
+    "assetBundlePatterns": ["**/*"]
+  }
+}
