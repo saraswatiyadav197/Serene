@@ -28,7 +28,7 @@ export const EditorialHeader: React.FC<EditorialHeaderProps> = ({
             style={styles.backButton}
           >
             {/* Displaying standard back arrow by rotating right arrow by 180 deg */}
-            <View style={{ transform: [{ rotate: '180deg' }] }}>
+            <View style={styles.rotatedArrow}>
               <ArrowRight size={16} color={THEME.colors.darkText} />
             </View>
           </TouchableOpacity>
@@ -90,5 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     marginLeft: THEME.spacing.md,
+  },
+  rotatedArrow: {
+    transform: [{ rotate: '180deg' }],
   },
 });

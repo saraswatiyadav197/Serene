@@ -8,6 +8,7 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
+import { THEME } from '../theme';
 import { useTheme } from '../theme/ThemeContext';
 
 interface LuxuryButtonProps {
@@ -76,21 +77,39 @@ export const LuxuryButton: React.FC<LuxuryButtonProps> = ({
     borderColor: 'transparent',
   };
 
+  const buttonStyle = [
+    styles.button,
+    isSolid && buttonSolidStyle,
+    isOutline && buttonOutlineStyle,
+    isText && styles.buttonText,
+    disabled && buttonDisabledStyle,
+    pressStyle,
+    style,
+  ];
+
+  const solidTextStyle = isSolid ? { color: isDarkMode ? '#140F0F' : colors.cardBackground } : undefined;
+  const outlineTextStyle = isOutline ? { color: colors.primaryBurgundy } : undefined;
+  const textVariantStyle = isText ? { color: colors.primaryBurgundy, textTransform: 'none', letterSpacing: 0.8 } : undefined;
+  const disabledTextStyle = disabled ? { color: colors.secondaryText } : undefined;
+  const iconTextStyle = icon ? { marginLeft: 8 } : undefined;
+
+  const buttonTextStyle = [
+    styles.text,
+    solidTextStyle,
+    outlineTextStyle,
+    textVariantStyle,
+    disabledTextStyle,
+    iconTextStyle,
+    textStyle,
+  ];
+
   return (
     <AnimatedPressable
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={disabled || loading}
-      style={[
-        styles.button,
-        isSolid && buttonSolidStyle,
-        isOutline && buttonOutlineStyle,
-        isText && styles.buttonText,
-        disabled && buttonDisabledStyle,
-        pressStyle,
-        style,
-      ]}
+      style={buttonStyle}
     >
       {loading ? (
         <ActivityIndicator
@@ -100,19 +119,7 @@ export const LuxuryButton: React.FC<LuxuryButtonProps> = ({
       ) : (
         <>
           {icon && <React.Fragment>{icon}</React.Fragment>}
-          <Text
-            style={[
-              styles.text,
-              isSolid && { color: isDarkMode ? '#140F0F' : colors.cardBackground },
-              isOutline && { color: colors.primaryBurgundy },
-              isText && { color: colors.primaryBurgundy, textTransform: 'none', letterSpacing: 0.8 },
-              disabled && { color: colors.secondaryText },
-              icon ? { marginLeft: 8 } : null,
-              textStyle,
-            ]}
-          >
-            {title}
-          </Text>
+          <Text style={buttonTextStyle}>{title}</Text>
         </>
       )}
     </AnimatedPressable>
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   text: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 13,
     letterSpacing: 2,
     textTransform: 'uppercase',

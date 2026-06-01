@@ -12,11 +12,9 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
   error,
   ...props
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
   const [focusAnim] = useState(new Animated.Value(0));
 
   const handleFocus = () => {
-    setIsFocused(true);
     Animated.timing(focusAnim, {
       toValue: 1,
       duration: 300,
@@ -25,7 +23,6 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
     Animated.timing(focusAnim, {
       toValue: 0,
       duration: 300,

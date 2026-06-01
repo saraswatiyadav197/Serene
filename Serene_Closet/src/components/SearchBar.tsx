@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 14,
     padding: 0,
   },

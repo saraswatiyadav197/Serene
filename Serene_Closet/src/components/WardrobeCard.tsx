@@ -31,20 +31,31 @@ export const WardrobeCard: React.FC<WardrobeCardProps> = ({
     Vibration.vibrate(8);
     if (onPress) onPress();
   };
+  const containerStyle = [
+    styles.container,
+    {
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.border,
+      shadowColor: isDarkMode ? '#000000' : '#051F20',
+    },
+  ];
+
+  const wearBadgeStyle = [
+    styles.wearBadge,
+    { backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.72)' : 'rgba(5, 31, 32, 0.72)' },
+  ];
+
+  const wearCountStyle = [
+    styles.wearCount,
+    { color: isDarkMode ? '#DAF1DE' : colors.cardBackground },
+  ];
+
+  const categoryStyle = [styles.category, { color: colors.secondaryText }];
+  const titleStyle = [styles.title, { color: colors.darkText }];
+  const lastWornStyle = [styles.lastWornText, { color: colors.secondaryText }];
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.92}
-      onPress={handlePress}
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.cardBackground,
-          borderColor: colors.border,
-          shadowColor: isDarkMode ? '#000000' : '#051F20',
-        }
-      ]}
-    >
+    <TouchableOpacity activeOpacity={0.92} onPress={handlePress} style={containerStyle}>
       <View style={styles.imageContainer}>
         <EditorialImage
           source={{ uri: image }}
@@ -52,17 +63,17 @@ export const WardrobeCard: React.FC<WardrobeCardProps> = ({
           containerStyle={StyleSheet.absoluteFill}
           enableOverlay={true}
         />
-        <View style={[styles.wearBadge, { backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.72)' : 'rgba(5, 31, 32, 0.72)' }]}>
-          <Text style={[styles.wearCount, { color: isDarkMode ? '#DAF1DE' : colors.cardBackground }]}>{wearCount} wears</Text>
+        <View style={wearBadgeStyle}>
+          <Text style={wearCountStyle}>{wearCount} wears</Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[styles.category, { color: colors.secondaryText }]}>{category}</Text>
-        <Text style={[styles.title, { color: colors.darkText }]} numberOfLines={1}>{title}</Text>
-        
+        <Text style={categoryStyle}>{category}</Text>
+        <Text style={titleStyle} numberOfLines={1}>{title}</Text>
+
         <View style={styles.statsContainer}>
           <Calendar size={11} color={colors.secondaryText} style={styles.statIcon} />
-          <Text style={[styles.lastWornText, { color: colors.secondaryText }]} numberOfLines={1}>Worn: {lastWorn}</Text>
+          <Text style={lastWornStyle} numberOfLines={1}>Worn: {lastWorn}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -98,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   wearCount: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 8.5,
     letterSpacing: 0.5,
     fontWeight: '600',
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: THEME.spacing.xs,
   },
   category: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
@@ -116,7 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 13.5,
     marginBottom: THEME.spacing.xs,
     letterSpacing: 0.2,
@@ -131,7 +142,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   lastWornText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 10.5,
   },
 });

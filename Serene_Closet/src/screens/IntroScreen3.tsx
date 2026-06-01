@@ -29,13 +29,20 @@ export const IntroScreen3 = ({ navigation }: any) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [revealOpacity, revealTranslateY]);
+
+  const transparentBg = styles.transparentBackground;
+  const progressBarBorderStyle = [styles.progressBar, { backgroundColor: colors.border }];
+  const progressBarPrimaryStyle = [styles.progressBar, { backgroundColor: colors.primaryBurgundy }];
+  const archContainerTheme = [styles.archContainer, { backgroundColor: colors.cardBackground, borderColor: colors.border, shadowColor: isDarkMode ? '#000000' : '#051F20' }];
+  const contentAnimatedStyle = { opacity: revealOpacity, transform: [{ translateY: revealTranslateY }] };
+  const skipTextStyle = [styles.skipTextTop, { color: colors.primaryBurgundy }];
 
   return (
     <AmbientBackground>
       <SafeLayout
         statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-        style={[styles.container, { backgroundColor: 'transparent' }]}
+        style={[styles.container, transparentBg]}
         applyBottomInset={true}
       >
         {/* Top right skip */}
@@ -44,12 +51,12 @@ export const IntroScreen3 = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Login')}
           style={styles.skipButtonTop}
         >
-          <Text style={[styles.skipTextTop, { color: colors.primaryBurgundy }]}>Enter</Text>
+          <Text style={skipTextStyle}>Enter</Text>
         </TouchableOpacity>
 
         {/* Model Image inside Arch-style Border */}
         <View style={styles.archWrapper}>
-          <View style={[styles.archContainer, { backgroundColor: colors.cardBackground, borderColor: colors.border, shadowColor: isDarkMode ? '#000000' : '#051F20' }]}>
+          <View style={archContainerTheme}>
             <EditorialImage
               source={{ uri: IMAGES.intro3 }}
               style={styles.image}
@@ -60,19 +67,13 @@ export const IntroScreen3 = ({ navigation }: any) => {
         </View>
 
         {/* Floating white/glass content card at the bottom */}
-        <Animated.View style={[
-          styles.contentSection,
-          {
-            opacity: revealOpacity,
-            transform: [{ translateY: revealTranslateY }]
-          }
-        ]}>
+        <Animated.View style={[styles.contentSection, contentAnimatedStyle]}>
           <GlassCard style={styles.floatingCard} opacity={isDarkMode ? 0.82 : 0.92}>
             {/* Progress Indicators */}
             <View style={styles.progressContainer}>
-              <View style={[styles.progressBar, { backgroundColor: colors.border }]} />
-              <View style={[styles.progressBar, { backgroundColor: colors.border }]} />
-              <View style={[styles.progressBar, { backgroundColor: colors.primaryBurgundy }]} />
+              <View style={progressBarBorderStyle} />
+              <View style={progressBarBorderStyle} />
+              <View style={progressBarPrimaryStyle} />
             </View>
 
             <Text style={[styles.heading, { color: colors.darkText }]}>Shop by Your Style</Text>
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   skipTextTop: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 10.5,
     letterSpacing: 2.0,
     textTransform: 'uppercase',
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
   },
   heading: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     textAlign: 'center',
     letterSpacing: 0.5,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   paragraph: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
     textAlign: 'center',
     lineHeight: 18,

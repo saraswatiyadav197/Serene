@@ -12,10 +12,21 @@ export const SettingsScreen = ({ navigation }: any) => {
   const [biometrics, setBiometrics] = useState(true);
   const [notifications, setNotifications] = useState(true);
 
+  const safeLayoutStyle = [styles.container, { backgroundColor: colors.softBeigeBackground }];
+  const supportHeaderTitleStyle = [styles.supportHeaderTitle, { color: colors.primaryBurgundy }];
+  const supportTextStyle = [styles.supportText, { color: colors.darkText }];
+  const supportBtnStyle = [styles.supportBtn, { backgroundColor: colors.primaryBurgundy }];
+  const supportBtnTextStyle = [styles.supportBtnText, { color: isDarkMode ? '#140F0F' : colors.cardBackground }];
+  const sectionLabelStyle = [styles.sectionLabel, { color: colors.secondaryText }];
+  const configItemStyle = (bg: string, border: string) => [styles.configItem, { backgroundColor: bg, borderColor: border }];
+  const configTitleStyle = (col: string) => [styles.configTitle, { color: col }];
+  const configSubStyle = (col: string) => [styles.configSub, { color: col }];
+  const legalTextStyle = [styles.legalText, { color: colors.secondaryText }];
+
   return (
     <SafeLayout
       statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-      style={[styles.container, { backgroundColor: colors.softBeigeBackground }]}
+      style={safeLayoutStyle}
     >
       <EditorialHeader
         title="Settings"
@@ -29,16 +40,16 @@ export const SettingsScreen = ({ navigation }: any) => {
           <GlassCard style={styles.supportCard} opacity={isDarkMode ? 0.85 : 0.94}>
             <View style={styles.supportHeader}>
               <Sparkles size={16} color={colors.primaryBurgundy} fill={colors.primaryBurgundy} />
-              <Text style={[styles.supportHeaderTitle, { color: colors.primaryBurgundy }]}>VIP LUXURY CONCIERGE</Text>
+              <Text style={supportHeaderTitleStyle}>VIP LUXURY CONCIERGE</Text>
             </View>
-            <Text style={[styles.supportText, { color: colors.darkText }]}>
+            <Text style={supportTextStyle}>
               "A dedicated styling consultant is standing by to assist you with physical fittings, couture reservations, or bespoke digital closet organization."
             </Text>
             <TouchableOpacity
               activeOpacity={0.88}
-              style={[styles.supportBtn, { backgroundColor: colors.primaryBurgundy }]}
+              style={supportBtnStyle}
             >
-              <Text style={[styles.supportBtnText, { color: isDarkMode ? '#140F0F' : colors.cardBackground }]}>
+              <Text style={supportBtnTextStyle}>
                 CALL CONCIERGE ATELIER
               </Text>
             </TouchableOpacity>
@@ -47,12 +58,12 @@ export const SettingsScreen = ({ navigation }: any) => {
 
         {/* Configurations List */}
         <View style={styles.configSection}>
-          <Text style={[styles.sectionLabel, { color: colors.secondaryText }]}>AESTHETIC CONFIGURATIONS</Text>
+          <Text style={sectionLabelStyle}>AESTHETIC CONFIGURATIONS</Text>
           
-          <View style={[styles.configItem, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+          <View style={configItemStyle(colors.cardBackground, colors.border)}>
             <View>
-              <Text style={[styles.configTitle, { color: colors.darkText }]}>Dark Mode Styling</Text>
-              <Text style={[styles.configSub, { color: colors.secondaryText }]}>Invert layout to cinematic deep black styling</Text>
+              <Text style={configTitleStyle(colors.darkText)}>Dark Mode Styling</Text>
+              <Text style={configSubStyle(colors.secondaryText)}>Invert layout to cinematic deep black styling</Text>
             </View>
             <Switch
               value={isDarkMode}
@@ -62,10 +73,10 @@ export const SettingsScreen = ({ navigation }: any) => {
             />
           </View>
 
-          <View style={[styles.configItem, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+          <View style={configItemStyle(colors.cardBackground, colors.border)}>
             <View>
-              <Text style={[styles.configTitle, { color: colors.darkText }]}>Biometric Safe Entry</Text>
-              <Text style={[styles.configSub, { color: colors.secondaryText }]}>Secure your fashion archive with Fingerprint/FaceID</Text>
+              <Text style={configTitleStyle(colors.darkText)}>Biometric Safe Entry</Text>
+              <Text style={configSubStyle(colors.secondaryText)}>Secure your fashion archive with Fingerprint/FaceID</Text>
             </View>
             <Switch
               value={biometrics}
@@ -75,10 +86,10 @@ export const SettingsScreen = ({ navigation }: any) => {
             />
           </View>
 
-          <View style={[styles.configItem, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+          <View style={configItemStyle(colors.cardBackground, colors.border)}>
             <View>
-              <Text style={[styles.configTitle, { color: colors.darkText }]}>Push Recommendations</Text>
-              <Text style={[styles.configSub, { color: colors.secondaryText }]}>Receive micro weather notifications and fits</Text>
+              <Text style={configTitleStyle(colors.darkText)}>Push Recommendations</Text>
+              <Text style={configSubStyle(colors.secondaryText)}>Receive micro weather notifications and fits</Text>
             </View>
             <Switch
               value={notifications}
@@ -93,7 +104,7 @@ export const SettingsScreen = ({ navigation }: any) => {
         <View style={styles.legalSection}>
           <View style={styles.legalRow}>
             <Info size={12} color={colors.secondaryText} />
-            <Text style={[styles.legalText, { color: colors.secondaryText }]}>SERENE Closets App Version 0.0.1 • Crafted in Bengaluru</Text>
+            <Text style={legalTextStyle}>SERENE Closets App Version 0.0.1 • Crafted in Bengaluru</Text>
           </View>
         </View>
       </ScrollView>

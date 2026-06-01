@@ -29,21 +29,28 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
     Vibration.vibrate(10);
     if (onActionPress) onActionPress();
   };
+  const cardStyle = [styles.container, style];
+  const locationStyle = [styles.location, { color: colors.darkText }];
+  const conditionStyle = [styles.condition, { color: colors.primaryBurgundy }];
+  const dividerStyle = [styles.divider, { backgroundColor: colors.border }];
+  const tipTitleStyle = [styles.tipTitle, { color: colors.secondaryText }];
+  const recommendationStyle = [styles.recommendationText, { color: colors.darkText }];
+  const iconElement = <ArrowRight size={13} color={colors.primaryBurgundy} style={styles.iconMargin} />;
 
   return (
-    <GlassCard style={[styles.container, style]} opacity={isDarkMode ? 0.85 : 0.78}>
+    <GlassCard style={cardStyle} opacity={isDarkMode ? 0.85 : 0.78}>
       <View style={styles.header}>
         <View>
-          <Text style={[styles.location, { color: colors.darkText }]}>{location.toUpperCase()} • {temperature}</Text>
-          <Text style={[styles.condition, { color: colors.primaryBurgundy }]}>{condition}</Text>
+          <Text style={locationStyle}>{location.toUpperCase()} • {temperature}</Text>
+          <Text style={conditionStyle}>{condition}</Text>
         </View>
         <CloudSun size={26} color={colors.primaryBurgundy} strokeWidth={1.5} />
       </View>
-      
-      <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
-      <Text style={[styles.tipTitle, { color: colors.secondaryText }]}>AI DAILY RECOMMENDATION</Text>
-      <Text style={[styles.recommendationText, { color: colors.darkText }]}>{recommendation}</Text>
+      <View style={dividerStyle} />
+
+      <Text style={tipTitleStyle}>AI DAILY RECOMMENDATION</Text>
+      <Text style={recommendationStyle}>{recommendation}</Text>
 
       {onActionPress && (
         <LuxuryButton
@@ -52,7 +59,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
           variant="outline"
           style={styles.button}
           textStyle={styles.buttonText}
-          icon={<ArrowRight size={13} color={colors.primaryBurgundy} style={{ marginRight: 4 }} />}
+          icon={iconElement}
         />
       )}
     </GlassCard>
@@ -73,13 +80,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   location: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 10.5,
     letterSpacing: 1.5,
     fontWeight: '600',
   },
   condition: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 20,
     marginTop: THEME.spacing.xs,
     fontWeight: '700',
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   tipTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.8,
     marginBottom: THEME.spacing.xs,
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   recommendationText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
     lineHeight: 18,
   },
@@ -112,5 +119,8 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 10.5,
     letterSpacing: 1.2,
+  },
+  iconMargin: {
+    marginRight: 4,
   },
 });

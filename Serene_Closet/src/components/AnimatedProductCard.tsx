@@ -77,31 +77,45 @@ export const AnimatedProductCard: React.FC<AnimatedProductCardProps> = ({
     if (onPress) onPress();
   };
 
+  const animatedViewStyle = [
+    styles.animatedContainer,
+    {
+      opacity: fadeAnim,
+      transform: [
+        { translateY: slideAnim },
+        { scale: scaleValue },
+      ],
+    },
+  ];
+
+  const cardStyle = [
+    styles.container,
+    {
+      backgroundColor: colors.cardBackground,
+      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.85)',
+    },
+  ];
+
+  const likeButtonStyle = [
+    styles.likeButton,
+    {
+      backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.92)' : 'rgba(255, 255, 255, 0.9)',
+      borderColor: colors.border,
+    },
+  ];
+
+  const categoryTextStyle = [styles.category, { color: colors.secondaryText }];
+  const titleTextStyle = [styles.title, { color: colors.darkText }];
+  const priceTextStyle = [styles.price, { color: colors.primaryBurgundy }];
+
   return (
-    <Animated.View
-      style={[
-        styles.animatedContainer,
-        {
-          opacity: fadeAnim,
-          transform: [
-            { translateY: slideAnim },
-            { scale: scaleValue }
-          ],
-        },
-      ]}
-    >
+    <Animated.View style={animatedViewStyle}>
       <TouchableOpacity
         activeOpacity={0.92}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
         onPress={handlePress}
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.cardBackground,
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.85)',
-          }
-        ]}
+        style={cardStyle}
       >
         <View style={styles.imageContainer}>
           <EditorialImage
@@ -113,13 +127,7 @@ export const AnimatedProductCard: React.FC<AnimatedProductCardProps> = ({
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={handleLike}
-            style={[
-              styles.likeButton,
-              {
-                backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.92)' : 'rgba(255, 255, 255, 0.9)',
-                borderColor: colors.border,
-              }
-            ]}
+            style={likeButtonStyle}
           >
             <Heart
               size={13}
@@ -129,9 +137,9 @@ export const AnimatedProductCard: React.FC<AnimatedProductCardProps> = ({
           </TouchableOpacity>
         </View>
         <View style={styles.info}>
-          <Text style={[styles.category, { color: colors.secondaryText }]}>{category}</Text>
-          <Text style={[styles.title, { color: colors.darkText }]} numberOfLines={1}>{title}</Text>
-          <Text style={[styles.price, { color: colors.primaryBurgundy }]}>{price}</Text>
+          <Text style={categoryTextStyle}>{category}</Text>
+          <Text style={titleTextStyle} numberOfLines={1}>{title}</Text>
+          <Text style={priceTextStyle}>{price}</Text>
         </View>
       </TouchableOpacity>
     </Animated.View>

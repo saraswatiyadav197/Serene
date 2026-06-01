@@ -28,24 +28,30 @@ export const IntroScreen2 = ({ navigation }: any) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [contentOpacity, contentTranslateY]);
+
+  const progressBarBorderStyle = [styles.progressBar, { backgroundColor: colors.border }];
+  const progressBarPrimaryStyle = [styles.progressBar, { backgroundColor: colors.primaryBurgundy }];
+  const fullProgressBgStyle = [styles.fullProgress, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.1)' }];
+  const activeProgressStyle = [styles.activeProgress, { backgroundColor: colors.primaryBurgundy }];
+  const contentAnimatedStyle = { opacity: contentOpacity, transform: [{ translateY: contentTranslateY }] };
 
   return (
     <AmbientBackground>
       <SafeLayout
         statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-        style={[styles.container, { backgroundColor: 'transparent' }]}
+        style={[styles.container, styles.transparentBackground]}
         applyBottomInset={true}
       >
         {/* Top half: Cinematic Fashion Image with AI floating overlay */}
-        <View style={[styles.imageSection, { shadowColor: isDarkMode ? '#000000' : '#051F20' }]}>
+        <View style={[styles.imageSection, isDarkMode ? styles.imageSectionDarkShadow : styles.imageSectionLightShadow]}>
           <EditorialImage
             source={{ uri: IMAGES.intro2 }}
             style={styles.image}
             containerStyle={StyleSheet.absoluteFill}
             enableOverlay={true}
           />
-          <View style={[styles.imageOverlay, isDarkMode && { backgroundColor: 'rgba(5, 31, 32, 0.35)' }]} />
+          <View style={[styles.imageOverlay, isDarkMode ? styles.imageOverlayDark : undefined]} />
           
           {/* Style Analyzed Floating Glass Card */}
           <GlassCard style={styles.aiOverlayCard} opacity={isDarkMode ? 0.82 : 0.88}>
@@ -56,8 +62,8 @@ export const IntroScreen2 = ({ navigation }: any) => {
             <Text style={[styles.aiTitle, { color: colors.darkText }]}>Minimalist Chic</Text>
             
             <View style={styles.progressRow}>
-              <View style={[styles.fullProgress, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.1)' }]}>
-                <View style={[styles.activeProgress, { backgroundColor: colors.primaryBurgundy }]} />
+              <View style={fullProgressBgStyle}>
+                <View style={activeProgressStyle} />
               </View>
               <Text style={[styles.progressPercent, { color: colors.primaryBurgundy }]}>85%</Text>
             </View>
@@ -69,18 +75,12 @@ export const IntroScreen2 = ({ navigation }: any) => {
         </View>
 
         {/* Bottom half: Editorial Details */}
-        <Animated.View style={[
-          styles.contentSection,
-          {
-            opacity: contentOpacity,
-            transform: [{ translateY: contentTranslateY }]
-          }
-        ]}>
+        <Animated.View style={[styles.contentSection, contentAnimatedStyle]}>
           {/* Progress Indicators */}
           <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { backgroundColor: colors.border }]} />
-            <View style={[styles.progressBar, { backgroundColor: colors.primaryBurgundy }]} />
-            <View style={[styles.progressBar, { backgroundColor: colors.border }]} />
+            <View style={progressBarBorderStyle} />
+            <View style={progressBarPrimaryStyle} />
+            <View style={progressBarBorderStyle} />
           </View>
 
           <Text style={[styles.heading, { color: colors.darkText }]}>AI Outfit Suggestions</Text>
@@ -121,12 +121,21 @@ const styles = StyleSheet.create({
     position: 'relative',
     ...THEME.shadows.premiumDeep,
   },
+  imageSectionDarkShadow: {
+    shadowColor: '#000000',
+  },
+  imageSectionLightShadow: {
+    shadowColor: '#051F20',
+  },
   image: {
     width: '100%',
     height: '100%',
   },
   imageOverlay: {
     ...StyleSheet.absoluteFill,
+  },
+  imageOverlayDark: {
+    backgroundColor: 'rgba(5, 31, 32, 0.35)',
   },
   aiOverlayCard: {
     position: 'absolute',
@@ -143,14 +152,14 @@ const styles = StyleSheet.create({
     marginBottom: THEME.spacing.xs,
   },
   aiHeaderText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.5,
     marginLeft: 6,
     fontWeight: '700',
   },
   aiTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     marginBottom: 10,
     fontWeight: '700',
@@ -172,7 +181,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
   },
   progressPercent: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 9.5,
     fontWeight: '700',
   },
@@ -181,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statusText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 9.5,
     marginLeft: 4,
     fontWeight: '600',
@@ -205,7 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
   },
   heading: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     textAlign: 'center',
     letterSpacing: 0.5,
@@ -213,7 +222,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   paragraph: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
     textAlign: 'center',
     lineHeight: 18,
@@ -227,7 +236,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   skipTextBottom: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 11,
     letterSpacing: 1.2,
     textTransform: 'uppercase',

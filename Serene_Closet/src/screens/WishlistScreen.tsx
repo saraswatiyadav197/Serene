@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeLayout } from '../components/SafeLayout';
 import { EditorialHeader } from '../components/EditorialHeader';
 import { AnimatedProductCard } from '../components/AnimatedProductCard';

@@ -8,7 +8,6 @@ import {
   Animated,
   Vibration,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Menu } from '../components/Icons';
 import { THEME } from '../theme';
 import { useTheme } from '../theme/ThemeContext';
@@ -26,7 +25,6 @@ type HomeScreenProps = {
 };
 
 export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element => {
-  const insets = useSafeAreaInsets();
   const { colors, isDarkMode } = useTheme();
   
   // Fade-up reveals on mount
@@ -76,21 +74,34 @@ export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element =
         Animated.timing(sectionSlide3, { toValue: 0, duration: 500, useNativeDriver: true }),
       ]).start();
     }, staggerDelay * 3);
-  }, []);
+  }, [fadeAnim, sectionFade1, sectionFade2, sectionFade3, sectionSlide1, sectionSlide2, sectionSlide3, slideAnim]);
 
   const handleAvatarPress = () => {
     Vibration.vibrate(8);
     navigation.navigate('Profile');
   };
 
+  const scrollAnimatedStyle = { opacity: fadeAnim, transform: [{ translateY: slideAnim }] };
+  const section1AnimatedStyle = { opacity: sectionFade1, transform: [{ translateY: sectionSlide1 }] };
+  const section2AnimatedStyle = { opacity: sectionFade2, transform: [{ translateY: sectionSlide2 }] };
+  const section3AnimatedStyle = { opacity: sectionFade3, transform: [{ translateY: sectionSlide3 }] };
+
+  const containerStyle = [styles.container, styles.transparentBackground];
+  const navbarStyle = [styles.navbar, styles.transparentBackground, { borderColor: colors.borderLight }];
+  const avatarWrapperStyle = [styles.avatarWrapper, { borderColor: colors.border }];
+  const logoTextStyle = [styles.logoText, { color: colors.darkText }];
+  const greetingSubStyle = [styles.greetingSub, { color: colors.primaryBurgundy }];
+  const greetingMainStyle = [styles.greetingMain, { color: colors.darkText }];
+  const editorialLineStyle = [styles.editorialLine, { backgroundColor: colors.primaryBurgundy }];
+
   return (
     <AmbientBackground>
       <SafeLayout
         statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-        style={[styles.container, { backgroundColor: 'transparent' }]}
+        style={containerStyle}
       >
         {/* Top Navbar */}
-        <View style={[styles.navbar, { backgroundColor: 'transparent', borderColor: colors.borderLight }]}>
+          <View style={navbarStyle}>
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => Vibration.vibrate(5)}
@@ -100,13 +111,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element =
           </TouchableOpacity>
 
           <View style={styles.logoContainer}>
-            <Text style={[styles.logoText, { color: colors.darkText }]}>SERENE</Text>
-          </View>
+            <Text style={logoTextStyle}>SERENE</Text>
 
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={handleAvatarPress}
-            style={[styles.avatarWrapper, { borderColor: colors.border }]}
+            style={avatarWrapperStyle}
           >
             <EditorialImage
               source={{ uri: IMAGES.avatar }}
@@ -116,22 +126,20 @@ export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element =
             />
           </TouchableOpacity>
         </View>
+        </View>
 
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
           scrollEventThrottle={16}
-          style={{
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }}
+          style={scrollAnimatedStyle}
         >
           {/* Editorial Greeting */}
-          <Animated.View style={{ opacity: sectionFade1, transform: [{ translateY: sectionSlide1 }] }}>
+          <Animated.View style={section1AnimatedStyle}>
             <View style={styles.greetingContainer}>
-              <Text style={[styles.greetingSub, { color: colors.primaryBurgundy }]}>WELCOME TO SERENE</Text>
-              <Text style={[styles.greetingMain, { color: colors.darkText }]}>Good morning, Sarswati.</Text>
-              <View style={[styles.editorialLine, { backgroundColor: colors.primaryBurgundy }]} />
+              <Text style={greetingSubStyle}>WELCOME TO SERENE</Text>
+              <Text style={greetingMainStyle}>Good morning, Sarswati.</Text>
+              <View style={editorialLineStyle} />
             </View>
           </Animated.View>
 
@@ -147,7 +155,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element =
           </View>
 
           {/* Weather Card Contextual Suggestion */}
-          <Animated.View style={{ opacity: sectionFade2, transform: [{ translateY: sectionSlide2 }] }}>
+          <Animated.View style={section2AnimatedStyle}>
             <WeatherCard
               location="Bangalore"
               temperature="24°C"
@@ -192,7 +200,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps): React.JSX.Element =
           </ScrollView>
 
           {/* AI Stylist Picks Section */}
-          <Animated.View style={{ opacity: sectionFade3, transform: [{ translateY: sectionSlide3 }] }}>
+          <Animated.View style={section3AnimatedStyle}>
             <View style={styles.sectionHeader}>
               <View>
                 <Text style={[styles.sectionTitle, { color: colors.darkText }]}>AI Stylist Picks</Text>
@@ -218,6 +226,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  transparentBackground: {
+    backgroundColor: 'transparent',
+  },
   navbar: {
     height: 56,
     flexDirection: 'row',
@@ -234,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.headingLight.fontFamily,
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 6,
@@ -263,14 +274,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   greetingSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 2,
     marginBottom: 4,
     fontWeight: '600',
   },
   greetingMain: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 24,
     fontWeight: '700',
   },
@@ -287,19 +298,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   sectionTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     fontWeight: '700',
   },
   sectionSubtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 7.5,
     letterSpacing: 1.5,
     marginTop: 2,
     fontWeight: '600',
   },
   viewAllBtn: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 10.5,
     letterSpacing: 1.2,
     textTransform: 'uppercase',

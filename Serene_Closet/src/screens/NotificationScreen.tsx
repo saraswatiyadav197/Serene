@@ -4,7 +4,7 @@ import { SafeLayout } from '../components/SafeLayout';
 import { EditorialHeader } from '../components/EditorialHeader';
 import { GlassCard } from '../components/GlassCard';
 import { THEME } from '../theme';
-import { Sparkles, Calendar, Shirt } from '../components/Icons';
+import { Sparkles, Shirt } from '../components/Icons';
 
 export const NotificationScreen = ({ navigation }: any) => {
   const alerts = [

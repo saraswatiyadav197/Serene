@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 12,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   input: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 14,
     padding: 0,
   },
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     color: '#D32F2F',
     marginTop: THEME.spacing.xs,
     marginLeft: THEME.spacing.xs,
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
   },
 });

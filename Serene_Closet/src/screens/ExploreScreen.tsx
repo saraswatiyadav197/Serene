@@ -60,7 +60,9 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [selectedCategory]);
+  }, [fadeAnim, slideAnim]);
+
+  const scrollAnimatedStyle = { opacity: fadeAnim, transform: [{ translateY: slideAnim }] };
 
   const filteredProducts = EXPLORE_PRODUCTS.filter((prod) => {
     const matchesCategory =
@@ -86,7 +88,7 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
     <AmbientBackground>
       <SafeLayout
         statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-        style={[styles.container, { backgroundColor: 'transparent' }]}
+        style={[styles.container, styles.transparentBackground]}
       >
         {/* Header section */}
         <View style={styles.header}>
@@ -128,10 +130,7 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
-          style={{
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }}
+          style={scrollAnimatedStyle}
         >
           {/* Editorial Storytelling: Paris Capsule */}
           {selectedCategory === 'All' && searchQuery === '' && (
@@ -177,11 +176,7 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
                 onPress={() => handleProductPress(featuredProduct.id)}
                 style={[
                   styles.featuredCard,
-                  {
-                    backgroundColor: colors.cardBackground,
-                    borderColor: colors.border,
-                    shadowColor: isDarkMode ? '#000000' : '#051F20',
-                  }
+                  { backgroundColor: colors.cardBackground, borderColor: colors.border },
                 ]}
               >
                 <View style={styles.featuredImageContainer}>
@@ -191,7 +186,7 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
                     containerStyle={StyleSheet.absoluteFill}
                     enableOverlay={true}
                   />
-                  <View style={[styles.featuredOverlay, isDarkMode && { backgroundColor: 'rgba(10, 6, 6, 0.3)' }]} />
+                  <View style={[styles.featuredOverlay, isDarkMode ? styles.featuredOverlayDark : undefined]} />
                   <GlassCard style={styles.featuredMeta} opacity={isDarkMode ? 0.82 : 0.88}>
                     <View style={styles.featuredBadge}>
                       <Sparkles size={11} color={colors.primaryBurgundy} fill={colors.primaryBurgundy} />
@@ -233,7 +228,7 @@ export const ExploreScreen = ({ navigation }: any): React.JSX.Element => {
                 </View>
 
                 {/* Right Column (Offset downwards to create staggered layout) */}
-                <View style={[styles.staggeredColumn, { marginTop: 32 }]}>
+                <View style={[styles.staggeredColumn, styles.staggerMarginTop32]}>
                   {staggeredRight.map((item, idx) => (
                     <View key={item.id} style={styles.staggeredItemWrapper}>
                       <AnimatedProductCard
@@ -273,13 +268,13 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   subtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginTop: 2,
@@ -309,12 +304,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   capsuleTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     fontWeight: '700',
   },
   capsuleSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 7.5,
     letterSpacing: 1.5,
     marginTop: 2,
@@ -339,22 +334,28 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   capsuleCardTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 14,
     marginBottom: 2,
     fontWeight: '700',
   },
   capsuleCardPrice: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 11,
     fontWeight: '600',
+  },
+  transparentBackground: {
+    backgroundColor: 'transparent',
+  },
+  staggerMarginTop32: {
+    marginTop: 32,
   },
   featuredSection: {
     marginHorizontal: 18,
     marginBottom: 36,
   },
   sectionHeading: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.8,
     marginBottom: 10,
@@ -381,6 +382,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(5, 31, 32, 0.2)',
   },
+  featuredOverlayDark: {
+    backgroundColor: 'rgba(10, 6, 6, 0.3)',
+  },
   featuredMeta: {
     margin: 18,
     padding: 18,
@@ -394,20 +398,20 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   featuredBadgeText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginLeft: 6,
     fontWeight: '700',
   },
   featuredTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     marginBottom: 2,
     fontWeight: '700',
   },
   featuredPrice: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12,
     marginBottom: 6,
     fontWeight: '600',
@@ -417,7 +421,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   featuredActionText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 9.5,
     letterSpacing: 1,
     marginRight: 6,
@@ -441,7 +445,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
   },
 });

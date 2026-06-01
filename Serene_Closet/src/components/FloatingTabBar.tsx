@@ -148,29 +148,29 @@ export const FloatingTabBar: React.FC<BottomTabBarProps> = ({
     }
   };
 
+  const containerStyle = [
+    styles.container,
+    {
+      backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.88)' : 'rgba(218, 241, 222, 0.82)',
+      borderColor: isDarkMode ? 'rgba(142, 182, 155, 0.12)' : 'rgba(255, 255, 255, 0.85)',
+      shadowColor: isDarkMode ? '#000000' : '#051F20',
+      shadowOpacity: isDarkMode ? 0.35 : 0.12,
+    },
+  ];
+
+  const indicatorStyle = [
+    styles.indicator,
+    {
+      transform: [{ translateX: slideAnim }],
+      backgroundColor: isDarkMode ? 'rgba(35, 83, 71, 0.18)' : 'rgba(22, 56, 50, 0.06)',
+      borderColor: isDarkMode ? 'rgba(35, 83, 71, 0.28)' : 'rgba(22, 56, 50, 0.1)',
+    },
+  ];
+
   return (
-    <View 
-      style={[
-        styles.container, 
-        { 
-          backgroundColor: isDarkMode ? 'rgba(11, 43, 38, 0.88)' : 'rgba(218, 241, 222, 0.82)',
-          borderColor: isDarkMode ? 'rgba(142, 182, 155, 0.12)' : 'rgba(255, 255, 255, 0.85)',
-          shadowColor: isDarkMode ? '#000000' : '#051F20',
-          shadowOpacity: isDarkMode ? 0.35 : 0.12,
-        }
-      ]}
-    >
+    <View style={containerStyle}>
       {/* Active Tab Background Slide Indicator */}
-      <Animated.View
-        style={[
-          styles.indicator,
-          {
-            transform: [{ translateX: slideAnim }],
-            backgroundColor: isDarkMode ? 'rgba(35, 83, 71, 0.18)' : 'rgba(22, 56, 50, 0.06)',
-            borderColor: isDarkMode ? 'rgba(35, 83, 71, 0.28)' : 'rgba(22, 56, 50, 0.1)',
-          },
-        ]}
-      />
+      <Animated.View style={indicatorStyle} />
 
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -186,9 +186,17 @@ export const FloatingTabBar: React.FC<BottomTabBarProps> = ({
         const inactiveColor = colors.secondaryText;
         const color = isFocused ? activeColor : inactiveColor;
 
-        const animatedStyle = {
-          transform: [{ scale: scaleAnims[index] || 1 }],
-        };
+        const animatedContentStyle = [
+          styles.tabContent,
+          {
+            transform: [{ scale: scaleAnims[index] || 1 }],
+          },
+        ];
+
+        const labelTextColorStyle = { color };
+        const selectedLabelTextStyle = isFocused ? { color: colors.primaryBurgundy } : undefined;
+        const labelTextStyle = [styles.label, labelTextColorStyle, selectedLabelTextStyle];
+        const activeDotStyle = [styles.activeDot, { backgroundColor: colors.primaryBurgundy }];
 
         return (
           <TouchableOpacity
@@ -197,18 +205,16 @@ export const FloatingTabBar: React.FC<BottomTabBarProps> = ({
             accessibilityState={isFocused ? { selected: true } : {}}
             onPress={() => handlePress(route.key, route.name, index, isFocused)}
             style={styles.tabItem}
-            activeOpacity={1} // Override default overlay so our custom scale feels premium
+            activeOpacity={1}
           >
-            <Animated.View style={[styles.tabContent, animatedStyle]}>
+            <Animated.View style={animatedContentStyle}>
               {getIcon(route.name, color, isFocused)}
-              <Text style={[styles.label, { color: color }, isFocused && { color: colors.primaryBurgundy }]}>
+              <Text style={labelTextStyle}>
                 {label.toString().toUpperCase()}
               </Text>
-              
+
               {/* Active Tab Ambient Dot Glow */}
-              {isFocused && route.name !== 'Scan' && (
-                <View style={[styles.activeDot, { backgroundColor: colors.primaryBurgundy }]} />
-              )}
+              {isFocused && route.name !== 'Scan' && <View style={activeDotStyle} />}
             </Animated.View>
           </TouchableOpacity>
         );
@@ -254,7 +260,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.2,
     marginTop: 4,

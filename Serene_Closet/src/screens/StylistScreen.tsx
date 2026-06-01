@@ -83,7 +83,15 @@ export const StylistScreen = () => {
       duration: THEME.motion.durations.screen,
       useNativeDriver: true,
     }).start();
-  }, [selectedContext]);
+  }, [selectedContext, revealAnim]);
+
+  // Precompute dynamic styles to avoid inline style objects
+  const outfitAnimatedStyle = [styles.outfitSection, { opacity: revealAnim }];
+  const messageTextStyle = [styles.messageText, { color: colors.darkText }];
+  const userMessageTextStyle = [styles.userMessageText, { color: isDarkMode ? '#140F0F' : colors.cardBackground }];
+  const typingDotStyle = (dotOpacity: Animated.Value) => [styles.typingDot, { opacity: dotOpacity, backgroundColor: colors.primaryBurgundy }];
+  const chatInputStyle = [styles.chatInput, { color: colors.darkText }];
+  const sendBtnStyle = [styles.sendBtn, { backgroundColor: colors.primaryBurgundy }];
 
   const handleSend = () => {
     if (!inputValue.trim()) return;
@@ -138,7 +146,7 @@ export const StylistScreen = () => {
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
+          style={styles.flexFill}
         >
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
             {/* Header section */}
@@ -187,7 +195,7 @@ export const StylistScreen = () => {
             </View>
 
             {/* Curated Outfit Set Presentation */}
-            <Animated.View style={[styles.outfitSection, { opacity: revealAnim }]}>
+            <Animated.View style={outfitAnimatedStyle}>
               <Text style={[styles.sectionLabel, { color: colors.secondaryText }]}>RECOMMENDED LOOK COMPOSITION</Text>
               <Text style={[styles.lookTitle, { color: colors.darkText }]}>{currentLook.name}</Text>
               
@@ -196,32 +204,58 @@ export const StylistScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.outfitScroll}
               >
-                {currentLook.items.map((item) => (
-                  <View 
-                    key={item.id} 
-                    style={[
-                      styles.itemCard, 
-                      { 
-                        backgroundColor: colors.cardBackground, 
-                        borderColor: colors.border,
-                        shadowColor: isDarkMode ? '#000000' : '#201515',
-                      }
-                    ]}
-                  >
-                    <View style={styles.itemImageContainer}>
-                      <EditorialImage
-                        source={{ uri: item.image }}
-                        style={styles.itemImage}
-                        containerStyle={styles.itemImageContainer}
-                      />
-                    </View>
-                    <View style={styles.itemMeta}>
-                      <Text style={[styles.itemCategory, { color: colors.secondaryText }]}>{item.category}</Text>
-                      <Text style={[styles.itemTitle, { color: colors.darkText }]} numberOfLines={1}>{item.title}</Text>
-                      <Text style={[styles.itemBrand, { color: colors.primaryBurgundy }]}>{item.brand}</Text>
-                    </View>
-                  </View>
-                ))}
+                {currentLook.items.map((item) => {
+  const cardStyle = [
+    styles.itemCard,
+    {
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.border,
+      shadowColor: isDarkMode ? '#000000' : '#201515',
+    },
+  ];
+
+  return (
+    <View key={item.id} style={cardStyle}>
+      <View style={styles.itemImageContainer}>
+        <EditorialImage
+          source={{ uri: item.image }}
+          style={styles.itemImage}
+          containerStyle={styles.itemImageContainer}
+        />
+      </View>
+
+      <View style={styles.itemMeta}>
+        <Text
+          style={[
+            styles.itemCategory,
+            { color: colors.secondaryText },
+          ]}
+        >
+          {item.category}
+        </Text>
+
+        <Text
+          style={[
+            styles.itemTitle,
+            { color: colors.darkText },
+          ]}
+          numberOfLines={1}
+        >
+          {item.title}
+        </Text>
+
+        <Text
+          style={[
+            styles.itemBrand,
+            { color: colors.primaryBurgundy },
+          ]}
+        >
+          {item.brand}
+        </Text>
+      </View>
+    </View>
+  );
+})}
               </ScrollView>
 
               {/* Action buttons for composition */}
@@ -231,13 +265,13 @@ export const StylistScreen = () => {
                   onPress={handleSwapItems}
                   variant="outline"
                   style={styles.actionBtn}
-                  icon={<RefreshCw size={14} color={colors.primaryBurgundy} style={{ marginRight: 6 }} />}
+                  icon={<RefreshCw size={14} color={colors.primaryBurgundy} style={styles.iconMarginSmall} />}
                 />
                 <LuxuryButton
                   title="Save Look"
                   onPress={() => Vibration.vibrate([0, 15, 20])}
                   style={styles.actionBtnRight}
-                  icon={<Bookmark size={14} color={isDarkMode ? '#140F0F' : colors.cardBackground} style={{ marginRight: 6 }} />}
+                  icon={<Bookmark size={14} color={isDarkMode ? '#140F0F' : colors.cardBackground} style={styles.iconMarginSmall} />}
                 />
               </View>
             </Animated.View>
@@ -258,11 +292,11 @@ export const StylistScreen = () => {
                   >
                     {isStylist ? (
                       <GlassCard style={styles.stylistBubble} opacity={isDarkMode ? 0.82 : 0.88}>
-                        <Text style={[styles.messageText, { color: colors.darkText }]}>{msg.text}</Text>
+                        <Text style={messageTextStyle}>{msg.text}</Text>
                       </GlassCard>
                     ) : (
-                      <View style={[styles.userBubble, { backgroundColor: colors.primaryBurgundy }]}>
-                        <Text style={[styles.userMessageText, { color: isDarkMode ? '#140F0F' : colors.cardBackground }]}>
+                      <View style={[styles.userBubble, { backgroundColor: colors.primaryBurgundy }]}> 
+                        <Text style={userMessageTextStyle}>
                           {msg.text}
                         </Text>
                       </View>
@@ -275,9 +309,9 @@ export const StylistScreen = () => {
               {isTyping && (
                 <View style={[styles.messageRow, styles.messageRowLeft]}>
                   <GlassCard style={styles.typingBubble} opacity={isDarkMode ? 0.82 : 0.85}>
-                    <Animated.View style={[styles.typingDot, { opacity: dot1, backgroundColor: colors.primaryBurgundy }]} />
-                    <Animated.View style={[styles.typingDot, { opacity: dot2, backgroundColor: colors.primaryBurgundy }]} />
-                    <Animated.View style={[styles.typingDot, { opacity: dot3, backgroundColor: colors.primaryBurgundy }]} />
+                    <Animated.View style={typingDotStyle(dot1)} />
+                    <Animated.View style={typingDotStyle(dot2)} />
+                    <Animated.View style={typingDotStyle(dot3)} />
                   </GlassCard>
                 </View>
               )}
@@ -288,7 +322,7 @@ export const StylistScreen = () => {
           <View style={styles.inputStickyContainer}>
             <GlassCard style={styles.inputStickyCard} opacity={isDarkMode ? 0.85 : 0.94}>
               <TextInput
-                style={[styles.chatInput, { color: colors.darkText }]}
+                style={chatInputStyle}
                 placeholder="Ask Serene Stylist..."
                 placeholderTextColor={colors.secondaryText}
                 value={inputValue}
@@ -298,7 +332,7 @@ export const StylistScreen = () => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={handleSend}
-                style={[styles.sendBtn, { backgroundColor: colors.primaryBurgundy }]}
+                style={sendBtnStyle}
               >
                 <Send size={16} color={isDarkMode ? '#140F0F' : colors.cardBackground} />
               </TouchableOpacity>
@@ -327,25 +361,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     fontWeight: '700',
     marginLeft: 6,
     letterSpacing: 0.5,
   },
   subtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginTop: 2,
     fontWeight: '600',
+  },
+  iconMarginSmall: {
+    marginRight: 6,
+  },
+  flexFill: {
+    flex: 1,
   },
   contextWrapper: {
     marginTop: 18,
     paddingHorizontal: 18,
   },
   sectionLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.8,
     marginBottom: 10,
@@ -363,7 +403,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   contextChipText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 10,
     letterSpacing: 0.8,
     fontWeight: '600',
@@ -373,7 +413,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   lookTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     marginBottom: 18,
     fontWeight: '700',
@@ -403,20 +443,20 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   itemCategory: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     fontWeight: '600',
   },
   itemTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12,
     marginVertical: 1,
     fontWeight: '700',
   },
   itemBrand: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 0.5,
     fontWeight: '600',
@@ -468,12 +508,12 @@ const styles = StyleSheet.create({
     ...THEME.shadows.premium,
   },
   messageText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
     lineHeight: 18,
   },
   userMessageText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12.5,
     lineHeight: 18,
     fontWeight: '600',
@@ -514,7 +554,7 @@ const styles = StyleSheet.create({
   },
   chatInput: {
     flex: 1,
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 13,
     padding: 0,
   },

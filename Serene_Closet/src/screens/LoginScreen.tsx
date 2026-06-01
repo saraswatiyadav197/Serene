@@ -49,15 +49,17 @@ export const LoginScreen = ({ navigation }: any) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [formOpacity, formTranslateY, headerOpacity]);
 
   const handleLogin = () => {
     Vibration.vibrate([0, 10, 30]);
     navigation.replace('MainApp');
   };
 
+  const outerContainerStyle = [styles.outerContainer, { backgroundColor: colors.softBeigeBackground }];
+
   return (
-    <View style={{ flex: 1, backgroundColor: colors.softBeigeBackground }}>
+    <View style={outerContainerStyle}>
       {/* Editorial campaign bg */}
       <EditorialImage
         source={{ uri: IMAGES.loginBg }}
@@ -65,14 +67,14 @@ export const LoginScreen = ({ navigation }: any) => {
         containerStyle={StyleSheet.absoluteFill}
         enableOverlay={true}
       />
-      <View style={[styles.overlay, isDarkMode && { backgroundColor: 'rgba(5, 31, 32, 0.6)' }]} />
+      <View style={[styles.overlay, isDarkMode ? styles.overlayDark : undefined]} />
       {/* StatusBar handled by SafeLayout */}
       
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+        style={styles.flexFill}
       >
-        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
+        <View style={[styles.flexFill, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
@@ -87,10 +89,7 @@ export const LoginScreen = ({ navigation }: any) => {
             {/* Bottom Input Card */}
             <Animated.View style={[
               styles.formWrapper,
-              {
-                opacity: formOpacity,
-                transform: [{ translateY: formTranslateY }]
-              }
+              { opacity: formOpacity, transform: [{ translateY: formTranslateY }] },
             ]}>
               <GlassCard style={styles.formCard} opacity={isDarkMode ? 0.82 : 0.94}>
                 <Text style={[styles.cardTitle, { color: colors.darkText }]}>Welcome Back</Text>
@@ -125,13 +124,7 @@ export const LoginScreen = ({ navigation }: any) => {
                     }}
                     style={styles.checkboxContainer}
                   >
-                    <View 
-                      style={[
-                        styles.checkbox, 
-                        { backgroundColor: colors.cardBackground, borderColor: colors.border },
-                        rememberMe && { borderColor: colors.primaryBurgundy }
-                      ]}
-                    >
+                    <View style={[styles.checkbox, { backgroundColor: colors.cardBackground, borderColor: colors.border }, rememberMe && { borderColor: colors.primaryBurgundy }]}>
                       {rememberMe && <View style={[styles.checkboxInner, { backgroundColor: colors.primaryBurgundy }]} />}
                     </View>
                     <Text style={[styles.checkboxLabel, { color: colors.darkText }]}>Remember Me</Text>
@@ -217,20 +210,20 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   logoTextSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 20,
     letterSpacing: 8,
     textTransform: 'uppercase',
   },
   logoText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 34,
     fontWeight: '700',
     letterSpacing: 4,
     marginTop: -4,
   },
   tagline: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 9.5,
     letterSpacing: 2.2,
     marginTop: 6,
@@ -247,13 +240,13 @@ const styles = StyleSheet.create({
     ...THEME.shadows.premiumDeep,
   },
   cardTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     marginBottom: 2,
     fontWeight: '700',
   },
   cardSubtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12,
     marginBottom: 36,
   },
@@ -282,12 +275,12 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
   },
   checkboxLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12,
     marginLeft: 10,
   },
   forgotText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12,
     textDecorationLine: 'underline',
     fontWeight: '600',
@@ -307,7 +300,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   dividerText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 7.5,
     letterSpacing: 1.5,
     marginHorizontal: 10,
@@ -329,7 +322,7 @@ const styles = StyleSheet.create({
     ...THEME.shadows.premium,
   },
   socialBtnText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 11.5,
     letterSpacing: 0.5,
     fontWeight: '700',
@@ -341,11 +334,11 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   noAccountText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
   },
   registerText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12.5,
     textDecorationLine: 'underline',
     fontWeight: '700',

@@ -28,20 +28,43 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
     if (onPress) onPress();
   };
 
+  const containerStyles = [
+    styles.container,
+    {
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.border,
+      shadowColor: isDarkMode ? '#000000' : '#051F20',
+    },
+    style,
+  ];
+
+  const gradientOverlayStyle = [
+    styles.gradientOverlay,
+    isDarkMode ? styles.gradientOverlayDark : undefined,
+  ];
+
+  const badgeTextStyle = [
+    styles.badgeText,
+    { color: colors.primaryBurgundy },
+  ];
+
+  const titleStyle = [
+    styles.title,
+    { color: colors.darkText },
+  ];
+
+  const subtitleStyle = [
+    styles.subtitle,
+    { color: colors.secondaryText },
+  ];
+
+  const actionTextStyle = [
+    styles.actionText,
+    { color: colors.primaryBurgundy },
+  ];
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.96}
-      onPress={handlePress}
-      style={[
-        styles.container, 
-        { 
-          backgroundColor: colors.cardBackground, 
-          borderColor: colors.border,
-          shadowColor: isDarkMode ? '#000000' : '#051F20',
-        }, 
-        style
-      ]}
-    >
+    <TouchableOpacity activeOpacity={0.96} onPress={handlePress} style={containerStyles}>
       <View style={styles.imageContainer}>
         <EditorialImage
           source={{ uri: image }}
@@ -49,17 +72,16 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
           containerStyle={StyleSheet.absoluteFill}
           enableOverlay={true}
         />
-        <View style={[styles.gradientOverlay, isDarkMode && { backgroundColor: 'rgba(10, 6, 6, 0.35)' }]} />
-        
+        <View style={gradientOverlayStyle} />
         <GlassCard style={styles.floatingCard} opacity={isDarkMode ? 0.82 : 0.88}>
           <View style={styles.badgeContainer}>
             <Sparkles size={11} color={colors.primaryBurgundy} fill={colors.primaryBurgundy} />
-            <Text style={[styles.badgeText, { color: colors.primaryBurgundy }]}>AI STYLIST PICK</Text>
+            <Text style={badgeTextStyle}>AI STYLIST PICK</Text>
           </View>
-          <Text style={[styles.title, { color: colors.darkText }]}>{title}</Text>
-          <Text style={[styles.subtitle, { color: colors.secondaryText }]}>{subtitle}</Text>
+          <Text style={titleStyle}>{title}</Text>
+          <Text style={subtitleStyle}>{subtitle}</Text>
           <View style={styles.actionContainer}>
-            <Text style={[styles.actionText, { color: colors.primaryBurgundy }]}>Discover details</Text>
+            <Text style={actionTextStyle}>Discover details</Text>
             <ArrowRight size={11} color={colors.primaryBurgundy} />
           </View>
         </GlassCard>
@@ -91,6 +113,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(5, 31, 32, 0.22)',
   },
+  gradientOverlayDark: {
+    backgroundColor: 'rgba(10, 6, 6, 0.35)',
+  },
   floatingCard: {
     margin: THEME.spacing.md,
     padding: THEME.spacing.md,
@@ -105,20 +130,20 @@ const styles = StyleSheet.create({
     marginBottom: THEME.spacing.xs,
   },
   badgeText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.5,
     marginLeft: 6,
     fontWeight: '700',
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 20,
     marginBottom: 2,
     fontWeight: '700',
   },
   subtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 11.5,
     marginBottom: THEME.spacing.sm,
   },
@@ -127,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 10,
     letterSpacing: 1.2,
     textTransform: 'uppercase',

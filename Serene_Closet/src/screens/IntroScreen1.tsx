@@ -42,11 +42,11 @@ export const IntroScreen1 = ({ navigation }: IntroScreen1Props): React.JSX.Eleme
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [cardOpacity, cardTranslateY, skipOpacity]);
 
   return (
     <AmbientBackground showGlow={false}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.flexFill}>
         {/* Editorial campaign background image */}
         <EditorialImage
           source={{ uri: IMAGES.intro1 }}
@@ -54,11 +54,11 @@ export const IntroScreen1 = ({ navigation }: IntroScreen1Props): React.JSX.Eleme
           containerStyle={StyleSheet.absoluteFill}
           enableOverlay={true}
         />
-        <View style={[styles.overlay, isDarkMode && { backgroundColor: 'rgba(5, 31, 32, 0.6)' }]} />
+        <View style={[styles.overlay, isDarkMode ? styles.overlayDark : undefined]} />
 
         <SafeLayout
           statusBarMode="light-content"
-          style={[styles.container, { backgroundColor: 'transparent' }]}
+          style={[styles.container, styles.transparentBackground]}
           applyBottomInset={true}
           applyTopInset={false}
           backgroundColor="transparent"
@@ -71,7 +71,7 @@ export const IntroScreen1 = ({ navigation }: IntroScreen1Props): React.JSX.Eleme
           </View>
 
           {/* Skip button at top right, fully notch-aware */}
-          <Animated.View style={{ opacity: skipOpacity }}>
+          <Animated.View style={[styles.skipAnimated, { opacity: skipOpacity }]}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Login')}
@@ -82,21 +82,20 @@ export const IntroScreen1 = ({ navigation }: IntroScreen1Props): React.JSX.Eleme
           </Animated.View>
 
           {/* Centered Luxury Card */}
-          <Animated.View style={[
-            styles.cardContainer,
-            {
-              opacity: cardOpacity,
-              transform: [{ translateY: cardTranslateY }]
-            }
-          ]}>
+          <Animated.View
+            style={[
+              styles.cardContainer,
+              { opacity: cardOpacity, transform: [{ translateY: cardTranslateY }] },
+            ]}
+          >
             <GlassCard style={styles.card} opacity={isDarkMode ? 0.82 : 0.92}>
-              <View style={[styles.iconCircle, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(22, 56, 50, 0.05)', borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(22, 56, 50, 0.12)' }]}>
+              <View style={[styles.iconCircle, isDarkMode ? styles.iconCircleDark : styles.iconCircleLight]}>
                 <Sparkles size={22} color={colors.primaryBurgundy} fill={colors.primaryBurgundy} />
               </View>
 
               <Text style={[styles.heading, { color: colors.darkText }]}>Build Your Smart Wardrobe</Text>
 
-              <Text style={[styles.paragraph, { color: colors.secondaryText }]}>
+              <Text style={[styles.paragraph, { color: colors.secondaryText }]}> 
                 Step into the future of luxury styling. Curate, analyze, and optimize your personal collections with AI fabric material intelligence.
               </Text>
 
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     zIndex: 99,
   },
   skipTextTop: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     color: '#FFFFFF',
     fontSize: 10.5,
     letterSpacing: 2.0,
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   heading: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     textAlign: 'center',
     letterSpacing: 0.5,
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   paragraph: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12.5,
     textAlign: 'center',
     lineHeight: 18,
@@ -211,8 +210,30 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   skipTextBottom: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 12,
     textDecorationLine: 'underline',
+  },
+  flexFill: {
+    flex: 1,
+  },
+  overlayDark: {
+    backgroundColor: 'rgba(5, 31, 32, 0.6)',
+  },
+  transparentBackground: {
+    backgroundColor: 'transparent',
+  },
+  skipAnimated: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  iconCircleDark: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  iconCircleLight: {
+    backgroundColor: 'rgba(22, 56, 50, 0.05)',
+    borderColor: 'rgba(22, 56, 50, 0.12)',
   },
 });

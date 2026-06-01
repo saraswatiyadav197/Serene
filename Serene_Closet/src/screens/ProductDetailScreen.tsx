@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions, Vibra
 import { SafeLayout } from '../components/SafeLayout';
 import { EditorialHeader } from '../components/EditorialHeader';
 import { GlassCard } from '../components/GlassCard';
-import { Heart, Sparkles, ShoppingBag, ArrowRight } from '../components/Icons';
+import { Heart, Sparkles, ShoppingBag } from '../components/Icons';
 import { THEME } from '../theme';
 import { EXPLORE_PRODUCTS } from '../utils/mockData';
 import { EditorialImage } from '../components/EditorialImage';
@@ -186,7 +186,7 @@ export const ProductDetailScreen = ({ route, navigation }: any) => {
             }}
             style={styles.stickyBtn}
           >
-            <ShoppingBag size={14} color={THEME.colors.cardBackground} style={{ marginRight: 6 }} />
+            <ShoppingBag size={14} color={THEME.colors.cardBackground} style={styles.iconMarginSmall} />
             <Text style={styles.stickyBtnText}>SECURE ORDER</Text>
           </TouchableOpacity>
         </GlassCard>
@@ -212,6 +212,9 @@ const styles = StyleSheet.create({
     borderColor: THEME.colors.borderLight,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconMarginSmall: {
+    marginRight: 6,
   },
   imageContainer: {
     width: width - 32,

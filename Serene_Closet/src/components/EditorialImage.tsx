@@ -50,25 +50,24 @@ export const EditorialImage: React.FC<EditorialImageProps> = ({
     }).start();
   };
 
+  const shimmerStyle = [styles.placeholder, { opacity: shimmer }];
+  const animatedImageStyle = [styles.animatedImageContainer, { opacity }];
+  const overlayStyle = [
+    StyleSheet.absoluteFill,
+    styles.overlay,
+    { backgroundColor: overlayColor },
+  ];
+
   return (
     <View style={[styles.container, containerStyle]}>
       {/* Animated shimmer placeholder */}
-      {!isLoaded && (
-        <Animated.View style={[styles.placeholder, { opacity: shimmer }]} />
-      )}
+      {!isLoaded && <Animated.View style={shimmerStyle} />}
 
-      <Animated.View style={{ flex: 1, opacity }}>
-        <Image
-          style={[styles.image, style]}
-          onLoad={handleLoad}
-          {...props}
-        />
+      <Animated.View style={animatedImageStyle}>
+        <Image style={[styles.image, style]} onLoad={handleLoad} {...props} />
         {/* Cinematic warm tone filter */}
         {enableOverlay && isLoaded && (
-          <View
-            style={[StyleSheet.absoluteFill, { backgroundColor: overlayColor }, styles.roundedOverlay]}
-            pointerEvents="none"
-          />
+          <View style={overlayStyle} pointerEvents="none" />
         )}
         {/* Deeper edge vignette for cinematic depth */}
         {enableOverlay && isLoaded && (
@@ -88,6 +87,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
+  animatedImageContainer: {
+    flex: 1,
+  },
   image: {
     width: '100%',
     height: '100%',
@@ -95,6 +97,9 @@ const styles = StyleSheet.create({
   placeholder: {
     ...StyleSheet.absoluteFill,
     backgroundColor: '#DAF1DE', // Luxury Mint Background
+  },
+  overlay: {
+    backgroundColor: 'rgba(142, 182, 155, 0.05)',
   },
   roundedOverlay: {
     mixBlendMode: 'multiply' as any,

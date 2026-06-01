@@ -1,83 +1,94 @@
-import { Platform } from 'react-native';
-
 export const THEME = {
   colors: {
-    // Light Mode - Deep Emerald & Luxury Mint
-    primaryBurgundy: '#163832', // Deep Emerald
-    softBeigeBackground: '#DAF1DE', // Luxury Mint Background
-    cardBackground: '#DAF1DE', // Luxury Mint Card
-    darkText: '#051F20', // Primary Dark
-    secondaryText: '#235347', // Muted Emerald
-    border: '#8EB69B', // Soft Sage
-    borderLight: 'rgba(142, 182, 155, 0.35)',
-    whiteGlass: 'rgba(218, 241, 222, 0.72)',
-    shadow: 'rgba(5, 31, 32, 0.06)',
+    // Light Palette (serene brand adapted to requested colors)
+    primaryBurgundy: '#6B0F1A',
+    warmBeige: '#EADCC8',
+    accentGold: '#C9A84B',
+    softCreamBackground: '#FFF6F0',
+    textDarkCharcoal: '#222222',
+    secondaryText: '#5B5048',
+    border: '#D6C6B6',
+    borderLight: 'rgba(214, 198, 182, 0.35)',
+    whiteGlass: 'rgba(255, 246, 240, 0.78)',
+    shadow: 'rgba(34, 34, 34, 0.06)',
     white: '#FFFFFF',
     transparent: 'transparent',
-    overlay: 'rgba(5, 31, 32, 0.4)',
-    overlayDark: 'rgba(5, 31, 32, 0.65)',
-    gold: '#8EB69B', // Soft Sage
-    dustyRose: '#8EB69B',
+    overlay: 'rgba(34,34,34,0.32)',
+    softBeigeBackground: '#FFF6F0',
+    cardBackground: '#FFF6F0',
+    darkText: '#222222',
+    gold: '#C9A84B',
+    card: '#FFF6F0',
 
-    // Dark Mode - Deep Emerald & Botanical Dark
+    // Dark palette fallback
     dark: {
-      background: '#051F20', // Primary Dark
-      card: '#0B2B26', // Elevated Surface / Secondary Dark
-      primaryBurgundy: '#235347', // Muted Emerald Accent
-      darkText: '#DAF1DE', // Dark Mode Headline (Luxury Mint)
-      secondaryText: '#8EB69B', // Soft Sage Highlight
-      border: '#163832', // Deep Emerald
-      borderLight: 'rgba(22, 56, 50, 0.3)',
-      whiteGlass: 'rgba(11, 43, 38, 0.72)',
-      shadow: 'rgba(0, 0, 0, 0.4)',
-      gold: '#8EB69B', // Soft Sage
-    }
+      background: '#111111',
+      card: '#1A1A1A',
+      primaryBurgundy: '#7A1A24',
+      darkText: '#F6F4F2',
+      textDarkCharcoal: '#F6F4F2',
+      softCreamBackground: '#1A1A1A',
+      softBeigeBackground: '#1A1A1A',
+      cardBackground: '#1A1A1A',
+      white: '#FFFFFF',
+      transparent: 'transparent',
+      overlay: 'rgba(255,255,255,0.06)',
+      secondaryText: '#C9B69A',
+      border: '#2A2A2A',
+      borderLight: 'rgba(255,255,255,0.06)',
+      whiteGlass: 'rgba(20,20,20,0.72)',
+      shadow: 'rgba(0,0,0,0.6)',
+      accentGold: '#C9A84B',
+      gold: '#C9A84B',
+    },
   },
   typography: {
     heading: {
-      fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+      fontFamily: 'PlayfairDisplay_700Bold',
       fontWeight: '700' as const,
-      letterSpacing: 0.8,
-      color: '#051F20',
+      letterSpacing: 0.6,
+      color: '#222222',
     },
     headingLight: {
-      fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
-      fontWeight: '300' as const,
-      letterSpacing: 1.2,
-      color: '#051F20',
+      fontFamily: 'PlayfairDisplay_400Regular',
+      fontWeight: '400' as const,
+      letterSpacing: 0.8,
+      color: '#222222',
     },
     body: {
-      fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-light',
-      letterSpacing: 0.3,
-      color: '#235347',
+      fontFamily: 'Inter_400Regular',
+      letterSpacing: 0.2,
+      color: '#5B5048',
     },
     bodyBold: {
-      fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium',
+      fontFamily: 'Inter_600SemiBold',
       fontWeight: '600' as const,
-      letterSpacing: 0.3,
-      color: '#051F20',
+      letterSpacing: 0.2,
+      color: '#222222',
     },
     uppercase: {
-      fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium',
+      fontFamily: 'Inter_600SemiBold',
       fontWeight: '600' as const,
-      letterSpacing: 2.5,
+      letterSpacing: 2,
       textTransform: 'uppercase' as const,
-      color: '#235347',
+      color: '#5B5048',
     },
   },
   spacing: {
-    xs: 6,
-    sm: 10,
-    md: 18,
-    lg: 28,
-    xl: 36,
-    xxl: 48,
+    xxs: 4,
+    xs: 8,
+    sm: 16,
+    md: 24,
+    lg: 32,
+    xl: 48,
   },
   borderRadius: {
-    card: 16,
-    button: 10,
-    pill: 28,
-    input: 10,
+    small: 12,
+    medium: 16,
+    large: 20,
+    card: 24,
+    xl: 24,
+    pill: 999,
   },
   shadows: {
     premium: {
@@ -121,10 +132,10 @@ export const THEME = {
     },
   },
   atmosphere: {
-    ambientGradient: { start: '#DAF1DE', end: '#B5D4BB' }, // Luxury Mint to soft green sand
-    vignette: 'rgba(5, 31, 32, 0.04)', // subtle botanical vignette
-    filmGrain: 'rgba(5, 31, 32, 0.015)',
-    heroGlow: 'rgba(22, 56, 50, 0.08)', // soft emerald glow
-    scannerVignette: 'rgba(5, 31, 32, 0.35)',
+    ambientGradient: { start: '#FFF6F0', end: '#EADCC8' }, // soft cream to warm beige
+    vignette: 'rgba(34, 34, 34, 0.04)', // subtle soft vignette
+    filmGrain: 'rgba(34, 34, 34, 0.015)',
+    heroGlow: 'rgba(107, 15, 26, 0.06)', // soft burgundy glow
+    scannerVignette: 'rgba(34, 34, 34, 0.35)',
   }
 };

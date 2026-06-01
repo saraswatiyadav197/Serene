@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   Animated,
   Vibration,
@@ -47,7 +46,7 @@ export const WardrobeScreen = ({ navigation }: any) => {
         useNativeDriver: false, // width animation
       }).start();
     }, 600);
-  }, []);
+  }, [fadeAnim, slideAnim, utilityWidth]);
 
   const handleGenerate = () => {
     Vibration.vibrate(10);
@@ -59,11 +58,28 @@ export const WardrobeScreen = ({ navigation }: any) => {
     navigation.navigate('Scan');
   };
 
+  const scrollAnimatedStyle = { opacity: fadeAnim, transform: [{ translateY: slideAnim }] };
+
+  const safeLayoutStyle = [styles.container, styles.transparentBackground];
+  const generateCardTheme = [styles.generateCard, { shadowColor: isDarkMode ? '#000000' : '#051F20' }];
+  const generateOverlayTheme = isDarkMode ? styles.generateCardOverlayDark : styles.generateCardOverlayLight;
+  const heroGreetingStyle = [styles.heroGreeting, { color: colors.darkText }];
+  const sparkleTextStyle = [styles.sparkleText, { color: colors.primaryBurgundy }];
+  const generateTitleStyle = [styles.generateTitle, { color: colors.darkText }];
+  const generateSubStyle = [styles.generateSub, { color: colors.secondaryText }];
+  const arrowIconStyle = [styles.arrowIcon, { backgroundColor: isDarkMode ? colors.cardBackground : 'rgba(255, 255, 255, 0.9)', borderColor: colors.border }];
+  const statsCategoryStyle = [styles.statsCategory, { color: colors.darkText }];
+  const statsTempStyle = [styles.statsTemp, { color: colors.primaryBurgundy }];
+  const dividerStyle = [styles.divider, { backgroundColor: colors.border }];
+  const utilityValStyle = [styles.utilityVal, { color: colors.primaryBurgundy }];
+  const utilityTrackStyle = [styles.utilityTrack, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.06)' }];
+  const utilityBarAnimatedStyle = [styles.utilityBar, { width: utilityWidth.interpolate({ inputRange: [0, 1], outputRange: ['0%', '72%'] }), backgroundColor: colors.primaryBurgundy }];
+
   return (
     <AmbientBackground>
       <SafeLayout
         statusBarMode={isDarkMode ? 'light-content' : 'dark-content'}
-        style={[styles.container, { backgroundColor: 'transparent' }]}
+        style={safeLayoutStyle}
       >
         {/* Top Header */}
         <View style={styles.header}>
@@ -74,20 +90,17 @@ export const WardrobeScreen = ({ navigation }: any) => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
-          style={{
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }}
+          style={scrollAnimatedStyle}
         >
           
           {/* Main: What Should I Wear Today Greeting & Generate card */}
           <View style={styles.heroSection}>
-            <Text style={[styles.heroGreeting, { color: colors.darkText }]}>What Should I Wear Today?</Text>
+            <Text style={heroGreetingStyle}>What Should I Wear Today?</Text>
             
             <TouchableOpacity
               activeOpacity={0.94}
               onPress={handleGenerate}
-              style={[styles.generateCard, { shadowColor: isDarkMode ? '#000000' : '#051F20' }]}
+              style={generateCardTheme}
             >
               <EditorialImage
                 source={{ uri: IMAGES.abstractWardrobe }}
@@ -95,18 +108,18 @@ export const WardrobeScreen = ({ navigation }: any) => {
                 containerStyle={StyleSheet.absoluteFill}
                 enableOverlay={true}
               />
-              <View style={[styles.generateCardOverlay, isDarkMode && { backgroundColor: 'rgba(10, 6, 6, 0.45)' }]} />
+              <View style={generateOverlayTheme} />
               
               <GlassCard style={styles.generateInnerCard} opacity={isDarkMode ? 0.82 : 0.84}>
                 <View style={styles.sparkleRow}>
                   <Sparkles size={14} color={colors.primaryBurgundy} fill={colors.primaryBurgundy} />
-                  <Text style={[styles.sparkleText, { color: colors.primaryBurgundy }]}>COGNITIVE SYNTHESIS</Text>
+                  <Text style={sparkleTextStyle}>COGNITIVE SYNTHESIS</Text>
                 </View>
-                <Text style={[styles.generateTitle, { color: colors.darkText }]}>Generate Look</Text>
-                <Text style={[styles.generateSub, { color: colors.secondaryText }]}>
+                <Text style={generateTitleStyle}>Generate Look</Text>
+                <Text style={generateSubStyle}>
                   AI will compose a styling recommendation from your current wardrobe archive.
                 </Text>
-                <View style={[styles.arrowIcon, { backgroundColor: isDarkMode ? colors.cardBackground : 'rgba(255, 255, 255, 0.9)', borderColor: colors.border }]}>
+                <View style={arrowIconStyle}>
                   <ArrowRight size={12} color={colors.primaryBurgundy} />
                 </View>
               </GlassCard>
@@ -118,25 +131,19 @@ export const WardrobeScreen = ({ navigation }: any) => {
             <GlassCard style={styles.statsCard} opacity={isDarkMode ? 0.85 : 0.88}>
               <View style={styles.statsHeader}>
                 <View>
-                  <Text style={[styles.statsCategory, { color: colors.darkText }]}>Autumn/Winter '24 Capsule</Text>
-                  <Text style={[styles.statsTemp, { color: colors.primaryBurgundy }]}>Bangalore • 24°C</Text>
+                  <Text style={statsCategoryStyle}>Autumn/Winter '24 Capsule</Text>
+                  <Text style={statsTempStyle}>Bangalore • 24°C</Text>
                 </View>
                 <Cloud size={22} color={colors.primaryBurgundy} strokeWidth={1.5} />
               </View>
-              <View style={[styles.divider, { backgroundColor: colors.border }]} />
+              <View style={dividerStyle} />
               <View style={styles.utilityContainer}>
                 <View style={styles.utilityTextRow}>
                   <Text style={[styles.utilityLabel, { color: colors.secondaryText }]}>WARDROBE UTILITY</Text>
-                  <Text style={[styles.utilityVal, { color: colors.primaryBurgundy }]}>72% Optimized</Text>
+                  <Text style={utilityValStyle}>72% Optimized</Text>
                 </View>
-                <View style={[styles.utilityTrack, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.06)' }]}>
-                  <Animated.View style={[
-                    styles.utilityBar,
-                    { 
-                      width: utilityWidth.interpolate({ inputRange: [0, 1], outputRange: ['0%', '72%'] }),
-                      backgroundColor: colors.primaryBurgundy,
-                    }
-                  ]} />
+                <View style={utilityTrackStyle}>
+                  <Animated.View style={utilityBarAnimatedStyle} />
                 </View>
               </View>
             </GlassCard>
@@ -204,13 +211,13 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   subtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.headingLight.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginTop: 2,
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
   heroGreeting: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 20,
     marginBottom: 18,
     fontWeight: '700',
@@ -256,20 +263,20 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   sparkleText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginLeft: 6,
     fontWeight: '700',
   },
   generateTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     marginBottom: 2,
     fontWeight: '700',
   },
   generateSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 11,
     lineHeight: 15,
   },
@@ -299,13 +306,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statsCategory: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.headingLight.fontFamily,
     fontSize: 12,
     letterSpacing: 0.5,
     fontWeight: '700',
   },
   statsTemp: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 16,
     marginTop: 2,
     fontWeight: '700',
@@ -325,13 +332,13 @@ const styles = StyleSheet.create({
     marginBottom: THEME.spacing.xs,
   },
   utilityLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.5,
     fontWeight: '700',
   },
   utilityVal: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 10.5,
     fontWeight: '700',
   },
@@ -371,12 +378,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   captureTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 14.5,
     fontWeight: '700',
   },
   captureSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 9.5,
     marginTop: 1,
   },
@@ -389,12 +396,12 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   archiveTitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 18,
     fontWeight: '700',
   },
   archiveCount: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 9,
     letterSpacing: 1,
     fontWeight: '700',

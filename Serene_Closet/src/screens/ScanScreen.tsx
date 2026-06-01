@@ -8,7 +8,6 @@ import {
   Dimensions,
   Vibration,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { X, ImageIcon, History, Sparkles, Shirt } from '../components/Icons';
 import { THEME } from '../theme';
@@ -18,14 +17,13 @@ import { GlassCard } from '../components/GlassCard';
 import { SafeLayout } from '../components/SafeLayout';
 import { EditorialImage } from '../components/EditorialImage';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 type ScanScreenProps = {
   navigation: any;
 };
 
 export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element => {
-  const insets = useSafeAreaInsets();
   const { colors, isDarkMode } = useTheme();
 
   // Core scan beam animation
@@ -116,7 +114,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
       bracketAnim.start();
 
       // Trigger floating particles inside box
-      particles.forEach((p, idx) => {
+      particles.forEach((p, _idx) => {
         const loopParticle = () => {
           if (!isScanning) return;
           // Randomize starting location
@@ -161,7 +159,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
       bracketPulse.setValue(1);
       particles.forEach(p => p.opacity.setValue(0));
     }
-  }, [isScanning]);
+  }, [isScanning, bracketPulse, node1Opacity, node2Opacity, node3Opacity, particles, scanVignetteOpacity]);
 
   // Spring animation for result reveal
   useEffect(() => {
@@ -184,7 +182,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
       resultFade.setValue(0);
       resultSlide.setValue(40);
     }
-  }, [scanResult]);
+  }, [scanResult, resultFade, resultSlide]);
 
   const handleCapture = () => {
     if (isScanning || scanResult) return;
@@ -250,8 +248,24 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
   const scanHighlightColor = isDarkMode ? colors.primaryBurgundy : colors.gold;
   const activeBracketColor = isDarkMode ? colors.primaryBurgundy : colors.gold;
 
+  const fullScreenStyle = styles.fullScreenBlack;
+  const scanVignetteAnimatedStyle = [
+    styles.scanVignette,
+    { opacity: scanVignetteOpacity },
+    isDarkMode ? styles.scanVignetteDark : styles.scanVignetteLight,
+  ];
+
+  const bracketScaleStyle = { transform: [{ scale: bracketPulse }] };
+
+  // Node positions and themed colors precomputed
+  const node1AnimatedStyle = [styles.scanNode, styles.nodePos1, { opacity: node1Opacity }];
+  const node2AnimatedStyle = [styles.scanNode, styles.nodePos2, { opacity: node2Opacity }];
+  const node3AnimatedStyle = [styles.scanNode, styles.nodePos3, { opacity: node3Opacity }];
+  const nodePointStyle = [styles.nodePoint, { backgroundColor: scanHighlightColor }];
+  const counterValStyle = [styles.counterVal, { color: scanHighlightColor }];
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#000' }}>
+    <View style={fullScreenStyle}>
       {/* Background with Editorial treatment */}
       <EditorialImage
         source={{ uri: IMAGES.fabricBg }}
@@ -259,20 +273,11 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
         containerStyle={StyleSheet.absoluteFill}
         enableOverlay={true}
       />
-      <View style={[styles.overlay, isDarkMode && { backgroundColor: 'rgba(5, 31, 32, 0.72)' }]} />
+      <View style={[styles.overlay, isDarkMode ? styles.overlayDark : undefined]} />
       {/* StatusBar handled by SafeLayout */}
 
       {/* Atmospheric Scanning vignette layer */}
-      <Animated.View 
-        style={[
-          styles.scanVignette, 
-          { 
-            opacity: scanVignetteOpacity,
-            backgroundColor: isDarkMode ? 'rgba(35, 83, 71, 0.12)' : 'rgba(22, 56, 50, 0.08)' 
-          }
-        ]} 
-        pointerEvents="none" 
-      />
+      <Animated.View style={scanVignetteAnimatedStyle} pointerEvents="none" />
 
       <SafeLayout statusBarMode="light-content" style={styles.container} applyBottomInset={true}>
         {/* Top Header bar */}
@@ -288,7 +293,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
             <Text style={styles.title}>ATELIER SCANNER</Text>
             <Text style={[styles.subtitle, { color: colors.border }]}>AI TEXTILE & PATTERN DETECTOR</Text>
           </View>
-          <View style={{ width: 40 }} />
+          <View style={styles.width40} />
         </View>
 
         {/* Dynamic Center Viewfinder */}
@@ -296,30 +301,9 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
           <View style={styles.centerSection}>
             {/* Viewfinder Target */}
             <View style={styles.scannerBox}>
-              <Animated.View
-                style={[
-                  styles.bracket,
-                  styles.bracketTL,
-                  { transform: [{ scale: bracketPulse }] },
-                  isScanning && { borderColor: activeBracketColor },
-                ]}
-              />
-              <Animated.View
-                style={[
-                  styles.bracket,
-                  styles.bracketTR,
-                  { transform: [{ scale: bracketPulse }] },
-                  isScanning && { borderColor: activeBracketColor },
-                ]}
-              />
-              <Animated.View
-                style={[
-                  styles.bracket,
-                  styles.bracketBL,
-                  { transform: [{ scale: bracketPulse }] },
-                  isScanning && { borderColor: activeBracketColor },
-                ]}
-              />
+              <Animated.View style={[styles.bracket, styles.bracketTL, bracketScaleStyle, isScanning && { borderColor: activeBracketColor }]} />
+              <Animated.View style={[styles.bracket, styles.bracketTR, bracketScaleStyle, isScanning && { borderColor: activeBracketColor }]} />
+              <Animated.View style={[styles.bracket, styles.bracketBL, bracketScaleStyle, isScanning && { borderColor: activeBracketColor }]} />
               <Animated.View
                 style={[
                   styles.bracket,
@@ -347,50 +331,39 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
               {/* Advanced Live Bounding Box Nodes */}
               {isScanning && (
                 <>
-                  <Animated.View style={[styles.scanNode, { top: 60, left: 40, opacity: node1Opacity }]}>
-                    <View style={[styles.nodePoint, { backgroundColor: scanHighlightColor }]} />
+                  <Animated.View style={node1AnimatedStyle}>
+                    <View style={nodePointStyle} />
                     <View style={styles.nodeCard}>
                       <Text style={styles.nodeLabel}>WEFT ANGLE: 92.4°</Text>
                     </View>
                   </Animated.View>
 
-                  <Animated.View style={[styles.scanNode, { top: 160, left: 130, opacity: node2Opacity }]}>
-                    <View style={[styles.nodePoint, { backgroundColor: scanHighlightColor }]} />
+                  <Animated.View style={node2AnimatedStyle}>
+                    <View style={nodePointStyle} />
                     <View style={styles.nodeCard}>
                       <Text style={styles.nodeLabel}>THREAD COUNT: HIGH</Text>
                     </View>
                   </Animated.View>
 
-                  <Animated.View style={[styles.scanNode, { top: 100, left: 160, opacity: node3Opacity }]}>
-                    <View style={[styles.nodePoint, { backgroundColor: scanHighlightColor }]} />
+                  <Animated.View style={node3AnimatedStyle}>
+                    <View style={nodePointStyle} />
                     <View style={styles.nodeCard}>
                       <Text style={styles.nodeLabel}>DENSITY: OPTIMAL</Text>
                     </View>
                   </Animated.View>
 
                   {/* Glittering Floating Particles */}
-                  {particles.map((p, idx) => (
-                    <Animated.View
-                      key={idx}
-                      style={[
-                        styles.particle,
-                        {
-                          left: p.x,
-                          top: p.y,
-                          opacity: p.opacity,
-                          backgroundColor: scanHighlightColor,
-                          shadowColor: scanHighlightColor,
-                        },
-                      ]}
-                    />
-                  ))}
-                </>
+                  {particles.map((p, _idx) => {
+                    const particleStyle = [styles.particle, { left: p.x, top: p.y, opacity: p.opacity, backgroundColor: scanHighlightColor, shadowColor: scanHighlightColor }];
+                    return <Animated.View key={_idx} style={particleStyle} />;
+                  })}
+                  </>
               )}
 
               {/* Progress counter overlay */}
               {isScanning && (
                 <View style={styles.counterOverlay}>
-                  <Text style={[styles.counterVal, { color: scanHighlightColor }]}>{liveConfidence}%</Text>
+                  <Text style={counterValStyle}>{liveConfidence}%</Text>
                   <Text style={[styles.counterLabel, { color: colors.border }]}>RESOLVING TEXTURE</Text>
                 </View>
               )}
@@ -464,7 +437,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
                     }
                   ]}
                 >
-                  <Shirt size={14} color={colors.primaryBurgundy} style={{ marginRight: 6 }} />
+                  <Shirt size={14} color={colors.primaryBurgundy} style={styles.iconMarginSmall} />
                   <Text style={[styles.archiveBtnText, { color: colors.primaryBurgundy }]}>Archive in Closet</Text>
                 </TouchableOpacity>
 
@@ -476,7 +449,7 @@ export const ScanScreen = ({ navigation }: ScanScreenProps): React.JSX.Element =
                   }}
                   style={[styles.stylistBtn, { backgroundColor: colors.primaryBurgundy }]}
                 >
-                  <Sparkles size={14} color={isDarkMode ? '#140F0F' : colors.cardBackground} style={{ marginRight: 6 }} />
+                  <Sparkles size={14} color={isDarkMode ? '#140F0F' : colors.cardBackground} style={styles.iconMarginSmall} />
                   <Text style={[styles.stylistBtnText, { color: isDarkMode ? '#140F0F' : colors.cardBackground }]}>Consult AI Stylist</Text>
                 </TouchableOpacity>
               </View>
@@ -535,9 +508,19 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     zIndex: 1,
   },
+  scanVignetteDark: {
+    backgroundColor: 'rgba(35, 83, 71, 0.12)',
+  },
+  scanVignetteLight: {
+    backgroundColor: 'rgba(22, 56, 50, 0.08)',
+  },
   container: {
     flex: 1,
     justifyContent: 'space-between',
+  },
+  fullScreenBlack: {
+    flex: 1,
+    backgroundColor: '#000',
   },
   topBar: {
     flexDirection: 'row',
@@ -559,15 +542,18 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
   },
+  width40: {
+    width: 40,
+  },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 16,
     color: '#FFFFFF',
     fontWeight: '700',
     letterSpacing: 4,
   },
   subtitle: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 7.5,
     letterSpacing: 1.5,
     marginTop: 2,
@@ -648,7 +634,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(142, 182, 155, 0.25)',
   },
   nodeLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     color: '#DAF1DE',
     fontSize: 6.5,
     letterSpacing: 0.5,
@@ -676,12 +662,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(142, 182, 155, 0.2)',
   },
   counterVal: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 24,
     fontWeight: '700',
   },
   counterLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 7,
     letterSpacing: 1.2,
     marginTop: 2,
@@ -714,7 +700,7 @@ const styles = StyleSheet.create({
   },
   logText: {
     flex: 1,
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 10,
     fontWeight: '600',
   },
@@ -739,26 +725,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   resultTag: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8,
     letterSpacing: 1.5,
     marginLeft: 4,
     fontWeight: '600',
   },
   confidenceText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 9,
     letterSpacing: 0.5,
     fontWeight: '600',
   },
   fabricName: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 22,
     marginBottom: 6,
     fontWeight: '700',
   },
   fabricDesc: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 12,
     lineHeight: 18,
   },
@@ -776,13 +762,13 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   specLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 9,
     letterSpacing: 1,
     fontWeight: '600',
   },
   specVal: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.body.fontFamily,
     fontSize: 11,
   },
   resultActions: {
@@ -800,7 +786,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   archiveBtnText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 11,
     letterSpacing: 0.5,
     fontWeight: '600',
@@ -815,7 +801,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   stylistBtnText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 11,
     letterSpacing: 0.5,
     fontWeight: '600',
@@ -826,7 +812,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   resetBtnText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.bodyBold.fontFamily,
     fontSize: 11.5,
     textDecorationLine: 'underline',
     fontWeight: '600',
@@ -842,7 +828,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   controlIconLabel: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 9,
     letterSpacing: 1,
     marginTop: 6,
@@ -865,6 +851,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  iconMarginSmall: {
+    marginRight: 6,
   },
   captureBtnInner: {
     width: 58,

@@ -18,7 +18,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   showInnerLight = true,
   ...props
 }) => {
-  const { colors, isDarkMode, theme } = useTheme();
+  const { isDarkMode, theme } = useTheme();
 
   // Adapt colors for light or dark cinematic styles
   const baseBg = isDarkMode ? `rgba(11, 43, 38, ${opacity})` : `rgba(218, 241, 222, ${opacity})`;
@@ -35,32 +35,33 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       }
     : theme.shadows.premiumDeep;
 
+  const cardStyle = [
+    styles.card,
+    activeShadows,
+    {
+      backgroundColor: baseBg,
+      borderColor: borderColor,
+      borderWidth: borderWidth,
+    },
+    style,
+  ];
+
+  const innerLightStyle = [
+    styles.innerLightReflection,
+    { backgroundColor: innerLightColor },
+  ];
+
+  const warmInnerTintStyle = [
+    styles.warmInnerTint,
+    { backgroundColor: isDarkMode ? 'rgba(35, 83, 71, 0.015)' : 'rgba(22, 56, 50, 0.012)' },
+  ];
+
   return (
-    <View
-      style={[
-        styles.card,
-        activeShadows,
-        {
-          backgroundColor: baseBg,
-          borderColor: borderColor,
-          borderWidth: borderWidth,
-        },
-        style,
-      ]}
-      {...props}
-    >
+    <View style={cardStyle} {...props}>
       {/* Inner top light reflection — luxury frosted glass effect */}
-      {showInnerLight && (
-        <View style={[styles.innerLightReflection, { backgroundColor: innerLightColor }]} pointerEvents="none" />
-      )}
+      {showInnerLight && <View style={innerLightStyle} pointerEvents="none" />}
       {/* Subtle warm inner tint layer */}
-      <View 
-        style={[
-          styles.warmInnerTint, 
-          { backgroundColor: isDarkMode ? 'rgba(35, 83, 71, 0.015)' : 'rgba(22, 56, 50, 0.012)' }
-        ]} 
-        pointerEvents="none" 
-      />
+      <View style={warmInnerTintStyle} pointerEvents="none" />
       {children}
     </View>
   );

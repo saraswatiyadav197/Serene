@@ -27,18 +27,28 @@ export const FashionCard: React.FC<FashionCardProps> = ({
     if (onPress) onPress();
   };
 
+  const cardStyle = [
+    styles.container,
+    {
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.border,
+    },
+  ];
+
+  const badgeStyle = [
+    styles.categoryBadge,
+    {
+      backgroundColor: isDarkMode ? 'rgba(34, 25, 25, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+      borderColor: colors.border,
+    },
+  ];
+
+  const titleTextStyle = [styles.title, { color: colors.darkText }];
+  const subtitleTextStyle = [styles.editorialSub, { color: colors.secondaryText }];
+  const categoryTextStyle = [styles.categoryText, { color: colors.primaryBurgundy }];
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={handlePress}
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.cardBackground,
-          borderColor: colors.border,
-        }
-      ]}
-    >
+    <TouchableOpacity activeOpacity={0.9} onPress={handlePress} style={cardStyle}>
       <View style={styles.imageContainer}>
         <EditorialImage
           source={{ uri: image }}
@@ -46,21 +56,13 @@ export const FashionCard: React.FC<FashionCardProps> = ({
           containerStyle={StyleSheet.absoluteFill}
           enableOverlay={true}
         />
-        <View 
-          style={[
-            styles.categoryBadge,
-            {
-              backgroundColor: isDarkMode ? 'rgba(34, 25, 25, 0.85)' : 'rgba(255, 255, 255, 0.85)',
-              borderColor: colors.border,
-            }
-          ]}
-        >
-          <Text style={[styles.categoryText, { color: colors.primaryBurgundy }]}>{category}</Text>
+        <View style={badgeStyle}>
+          <Text style={categoryTextStyle}>{category}</Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[styles.title, { color: colors.darkText }]} numberOfLines={1}>{title}</Text>
-        <Text style={[styles.editorialSub, { color: colors.secondaryText }]}>LIMITED EDITION</Text>
+        <Text style={titleTextStyle} numberOfLines={1}>{title}</Text>
+        <Text style={subtitleTextStyle}>LIMITED EDITION</Text>
       </View>
     </TouchableOpacity>
   );
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   categoryText: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -108,14 +110,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: THEME.spacing.xs,
   },
   title: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.heading.fontFamily,
     fontSize: 15.5,
     marginBottom: 2,
     letterSpacing: 0.2,
     fontWeight: '700',
   },
   editorialSub: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 8.5,
     letterSpacing: 1.5,
     fontWeight: '600',

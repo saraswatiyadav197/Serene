@@ -6,7 +6,7 @@ import { PremiumInput } from '../components/PremiumInput';
 import { GlassCard } from '../components/GlassCard';
 import { THEME } from '../theme';
 import { EXPLORE_PRODUCTS } from '../utils/mockData';
-import { Check, Sparkles } from '../components/Icons';
+import { Sparkles } from '../components/Icons';
 
 const { width } = Dimensions.get('window');
 
@@ -101,7 +101,7 @@ export const CheckoutScreen = ({ route, navigation }: any) => {
             placeholder="Enter home/atelier suite..."
           />
           <View style={styles.inputRow}>
-            <View style={{ flex: 1, marginRight: THEME.spacing.sm }}>
+            <View style={styles.inputLeft}>
               <PremiumInput
                 label="City"
                 value={city}
@@ -109,7 +109,7 @@ export const CheckoutScreen = ({ route, navigation }: any) => {
                 placeholder="City"
               />
             </View>
-            <View style={{ flex: 1, marginLeft: THEME.spacing.sm }}>
+            <View style={styles.inputRight}>
               <PremiumInput
                 label="ZIP / Postal Code"
                 value={zipCode}
@@ -196,6 +196,14 @@ const styles = StyleSheet.create({
   productMeta: {
     marginLeft: THEME.spacing.md,
     flex: 1,
+  },
+  inputLeft: {
+    flex: 1,
+    marginRight: THEME.spacing.sm,
+  },
+  inputRight: {
+    flex: 1,
+    marginLeft: THEME.spacing.sm,
   },
   productCategory: {
     fontFamily: THEME.typography.bodyBold.fontFamily,

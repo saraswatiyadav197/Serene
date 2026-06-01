@@ -1,0 +1,160 @@
+
+> serene-closet@0.0.1 lint
+> eslint . --max-warnings=0
+
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\AIRecommendationCard.tsx
+  37:9   warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }  react-native/no-inline-styles
+  52:61  warning  Inline style: { backgroundColor: 'rgba(10, 6, 6, 0.35)' }            react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\AnimatedProductCard.tsx
+  100:11  warning  Inline style: {
+  borderColor: "isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.85)'"
+}  react-native/no-inline-styles
+  118:15  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(11, 43, 38, 0.92)' : 'rgba(255, 255, 255, 0.9)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\CategoryChip.tsx
+  47:23  warning  Inline style: { color: "isDarkMode ? '#140F0F' : colors.cardBackground" }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\EditorialImage.tsx
+  60:29  warning  Inline style: { flex: 1 }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\FashionCard.tsx
+  52:13  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(34, 25, 25, 0.85)' : 'rgba(255, 255, 255, 0.85)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\FloatingTabBar.tsx
+  155:9   warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(11, 43, 38, 0.88)' : 'rgba(218, 241, 222, 0.82)'",
+  borderColor: "isDarkMode ? 'rgba(142, 182, 155, 0.12)' : 'rgba(255, 255, 255, 0.85)'",
+  shadowColor: "isDarkMode ? '#000000' : '#051F20'",
+  shadowOpacity: 'isDarkMode ? 0.35 : 0.12'
+}  react-native/no-inline-styles
+  167:11  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(35, 83, 71, 0.18)' : 'rgba(22, 56, 50, 0.06)'",
+  borderColor: "isDarkMode ? 'rgba(35, 83, 71, 0.28)' : 'rgba(22, 56, 50, 0.1)'"
+}                                                                                                              react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\GlassCard.tsx
+  60:11  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(35, 83, 71, 0.015)' : 'rgba(22, 56, 50, 0.012)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\LuxuryButton.tsx
+  107:26  warning  Inline style: { color: "isDarkMode ? '#140F0F' : colors.cardBackground" }  react-native/no-inline-styles
+  109:25  warning  Inline style: { textTransform: 'none', letterSpacing: 0.8 }                react-native/no-inline-styles
+  111:22  warning  Inline style: { marginLeft: 8 }                                            react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\SafeLayout.tsx
+  35:9  warning  Inline style: {
+  paddingTop: 'applyTopInset ? insets.top : 0',
+  paddingBottom: 'applyBottomInset ? insets.bottom : 0'
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\WardrobeCard.tsx
+  41:9   warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }                                     react-native/no-inline-styles
+  55:41  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(11, 43, 38, 0.72)' : 'rgba(5, 31, 32, 0.72)'"
+}  react-native/no-inline-styles
+  56:43  warning  Inline style: { color: "isDarkMode ? '#DAF1DE' : colors.cardBackground" }                               react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\components\WeatherCard.tsx
+  55:77  warning  Inline style: { marginRight: 4 }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\navigation\AppNavigator.tsx
+  35:15  warning  Do not define components during render. React will see a new component type on every render and destroy the entire subtree’s DOM nodes and state (https://reactjs.org/docs/reconciliation.html#elements-of-different-types). Instead, move this component definition out of the parent component “TabNavigator” and pass data as props. If you want to allow component creation in props, set allowAsProps option to true  react/no-unstable-nested-components
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\CheckoutScreen.tsx
+  104:26  warning  Inline style: { flex: 1 }  react-native/no-inline-styles
+  112:26  warning  Inline style: { flex: 1 }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\ExploreScreen.tsx
+   89:35  warning  Inline style: { backgroundColor: 'transparent' }                     react-native/no-inline-styles
+  180:19  warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }  react-native/no-inline-styles
+  194:71  warning  Inline style: { backgroundColor: 'rgba(10, 6, 6, 0.3)' }             react-native/no-inline-styles
+  236:55  warning  Inline style: { marginTop: 32 }                                      react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\HomeScreen.tsx
+  88:35  warning  Inline style: { backgroundColor: 'transparent' }  react-native/no-inline-styles
+  91:38  warning  Inline style: { backgroundColor: 'transparent' }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\IntroScreen1.tsx
+  49:20  warning  Inline style: { flex: 1 }                                                                                                                                                                  react-native/no-inline-styles
+  57:53  warning  Inline style: { backgroundColor: 'rgba(5, 31, 32, 0.6)' }                                                                                                                                  react-native/no-inline-styles
+  61:37  warning  Inline style: { backgroundColor: 'transparent' }                                                                                                                                           react-native/no-inline-styles
+  93:48  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(22, 56, 50, 0.05)'",
+  borderColor: "isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(22, 56, 50, 0.12)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\IntroScreen2.tsx
+  37:35  warning  Inline style: { backgroundColor: 'transparent' }                                                        react-native/no-inline-styles
+  41:44  warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }                                     react-native/no-inline-styles
+  48:60  warning  Inline style: { backgroundColor: 'rgba(5, 31, 32, 0.35)' }                                              react-native/no-inline-styles
+  59:50  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.1)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\IntroScreen3.tsx
+  38:35  warning  Inline style: { backgroundColor: 'transparent' }                     react-native/no-inline-styles
+  52:47  warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\LoginScreen.tsx
+  60:18  warning  Inline style: { flex: 1 }                                  react-native/no-inline-styles
+  68:51  warning  Inline style: { backgroundColor: 'rgba(5, 31, 32, 0.6)' }  react-native/no-inline-styles
+  73:16  warning  Inline style: { flex: 1 }                                  react-native/no-inline-styles
+  75:22  warning  Inline style: { flex: 1 }                                  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\ProductDetailScreen.tsx
+  189:79  warning  Inline style: { marginRight: 6 }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\ScanScreen.tsx
+  252:18   warning  Inline style: { flex: 1, backgroundColor: '#000' }                                                       react-native/no-inline-styles
+  260:51   warning  Inline style: { backgroundColor: 'rgba(5, 31, 32, 0.72)' }                                               react-native/no-inline-styles
+  267:11   warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(35, 83, 71, 0.12)' : 'rgba(22, 56, 50, 0.08)'"
+}  react-native/no-inline-styles
+  289:24   warning  Inline style: { width: 40 }                                                                              react-native/no-inline-styles
+  348:59   warning  Inline style: { top: 60, left: 40 }                                                                      react-native/no-inline-styles
+  355:59   warning  Inline style: { top: 160, left: 130 }                                                                    react-native/no-inline-styles
+  362:59   warning  Inline style: { top: 100, left: 160 }                                                                    react-native/no-inline-styles
+  465:74   warning  Inline style: { marginRight: 6 }                                                                         react-native/no-inline-styles
+  477:101  warning  Inline style: { marginRight: 6 }                                                                         react-native/no-inline-styles
+  478:56   warning  Inline style: { color: "isDarkMode ? '#140F0F' : colors.cardBackground" }                                react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\SettingsScreen.tsx
+  41:52  warning  Inline style: { color: "isDarkMode ? '#140F0F' : colors.cardBackground" }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\StylistScreen.tsx
+  137:35   warning  Inline style: { backgroundColor: 'transparent' }                           react-native/no-inline-styles
+  141:18   warning  Inline style: { flex: 1 }                                                  react-native/no-inline-styles
+  204:23   warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#201515'" }        react-native/no-inline-styles
+  234:84   warning  Inline style: { marginRight: 6 }                                           react-native/no-inline-styles
+  240:107  warning  Inline style: { marginRight: 6 }                                           react-native/no-inline-styles
+  265:63   warning  Inline style: { color: "isDarkMode ? '#140F0F' : colors.cardBackground" }  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\screens\WardrobeScreen.tsx
+   65:35  warning  Inline style: { backgroundColor: 'transparent' }                                                                                                                                           react-native/no-inline-styles
+   89:44  warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }                                                                                                                        react-native/no-inline-styles
+   97:71  warning  Inline style: { backgroundColor: 'rgba(10, 6, 6, 0.45)' }                                                                                                                                  react-native/no-inline-styles
+  108:49  warning  Inline style: {
+  backgroundColor: "isDarkMode ? colors.cardBackground : 'rgba(255, 255, 255, 0.9)'"
+}                                                                                     react-native/no-inline-styles
+  131:52  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(22, 56, 50, 0.06)'"
+}                                                                                    react-native/no-inline-styles
+  151:17  warning  Inline style: { shadowColor: "isDarkMode ? '#000000' : '#051F20'" }                                                                                                                        react-native/no-inline-styles
+  158:55  warning  Inline style: {
+  backgroundColor: "isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(22, 56, 50, 0.05)'",
+  borderColor: "isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(22, 56, 50, 0.12)'"
+}  react-native/no-inline-styles
+
+c:\Users\saruy\OneDrive\Desktop\Serene\Serene_Closet\src\theme\ThemeContext.tsx
+  75:20  warning  Inline style: { flex: 1, alignItems: 'center', justifyContent: 'center' }  react-native/no-inline-styles
+
+✖ 67 problems (0 errors, 67 warnings)
+
+ESLint found too many warnings (maximum: 0).

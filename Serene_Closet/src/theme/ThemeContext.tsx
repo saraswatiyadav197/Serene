@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { THEME } from './index';
+import { useFonts as usePlayfair, PlayfairDisplay_400Regular, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
+import { useFonts as useInter, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 
 interface ThemeContextProps {
   isDarkMode: boolean;
@@ -19,6 +21,8 @@ const ThemeContext = createContext<ThemeContextProps>({
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
   const [isDarkMode, setIsDarkMode] = useState(systemColorScheme === 'dark');
+  const [pfLoaded] = usePlayfair({ PlayfairDisplay_400Regular, PlayfairDisplay_700Bold });
+  const [interLoaded] = useInter({ Inter_400Regular, Inter_600SemiBold });
 
   useEffect(() => {
     setIsDarkMode(systemColorScheme === 'dark');
@@ -28,22 +32,26 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsDarkMode((prev) => !prev);
   };
 
-  // Derive colors for light and dark palettes
-  const activeColors = isDarkMode
-    ? {
-        ...THEME.colors,
-        primaryBurgundy: THEME.colors.dark.primaryBurgundy,
-        softBeigeBackground: THEME.colors.dark.background,
-        cardBackground: THEME.colors.dark.card,
-        darkText: THEME.colors.dark.darkText,
-        secondaryText: THEME.colors.dark.secondaryText,
-        border: THEME.colors.dark.border,
-        borderLight: THEME.colors.dark.borderLight,
-        whiteGlass: THEME.colors.dark.whiteGlass,
-        shadow: THEME.colors.dark.shadow,
-        gold: THEME.colors.dark.gold,
-      }
-    : THEME.colors;
+  // Derive colors for light and dark palettes and provide backward-compatible aliases
+  const baseColors = isDarkMode ? THEME.colors.dark : THEME.colors;
+
+  const activeColors = {
+    ...baseColors,
+    // Backwards compatible keys used across the codebase
+    primaryBurgundy: baseColors.primaryBurgundy ?? THEME.colors.primaryBurgundy,
+    softBeigeBackground: baseColors.softCreamBackground ?? THEME.colors.softCreamBackground,
+    cardBackground: baseColors.card ?? baseColors.softCreamBackground ?? THEME.colors.softCreamBackground,
+    darkText: baseColors.darkText ?? baseColors.textDarkCharcoal ?? '#222222',
+    secondaryText: baseColors.secondaryText ?? THEME.colors.secondaryText,
+    border: baseColors.border ?? THEME.colors.border,
+    borderLight: baseColors.borderLight ?? THEME.colors.borderLight,
+    whiteGlass: baseColors.whiteGlass ?? THEME.colors.whiteGlass,
+    shadow: baseColors.shadow ?? THEME.colors.shadow,
+    gold: baseColors.accentGold ?? THEME.colors.accentGold,
+    white: baseColors.white ?? '#FFFFFF',
+    transparent: 'transparent',
+    overlay: baseColors.overlay ?? THEME.colors.overlay,
+  } as any;
 
   const activeAtmosphere = isDarkMode
     ? {
@@ -61,6 +69,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     atmosphere: activeAtmosphere,
   };
 
+  // Wait for fonts to load before rendering app to avoid layout shifts
+  if (!pfLoaded || !interLoaded) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="small" />
+      </View>
+    );
+  }
+
   return (
     <ThemeContext.Provider
       value={{
@@ -76,3 +93,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 };
 
 export const useTheme = () => useContext(ThemeContext);
+
+const styles = StyleSheet.create({
+  loader: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+});

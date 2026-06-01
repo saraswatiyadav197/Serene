@@ -5,7 +5,7 @@ import { EditorialHeader } from '../components/EditorialHeader';
 import { GlassCard } from '../components/GlassCard';
 import { THEME } from '../theme';
 import { EXPLORE_PRODUCTS } from '../utils/mockData';
-import { Cpu, Sparkles } from '../components/Icons';
+import { Sparkles } from '../components/Icons';
 
 export const OrderTrackingScreen = ({ route, navigation }: any) => {
   const { productId } = route.params || { productId: 'e1' };

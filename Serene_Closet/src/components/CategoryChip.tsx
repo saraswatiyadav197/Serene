@@ -29,27 +29,25 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
     borderColor: colors.border,
   };
 
+  const textColorStyle = { color: colors.secondaryText };
+  const activeTextColorStyle = isActive
+    ? { color: isDarkMode ? '#140F0F' : colors.cardBackground }
+    : undefined;
+
+  const labelStyle = [
+    styles.text,
+    textColorStyle,
+    activeTextColorStyle,
+    textStyle,
+  ];
+
   return (
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={onPress}
-      style={[
-        styles.chip,
-        inactiveChipStyle,
-        isActive && activeChipStyle,
-        style,
-      ]}
+      style={[styles.chip, inactiveChipStyle, isActive && activeChipStyle, style]}
     >
-      <Text
-        style={[
-          styles.text,
-          { color: colors.secondaryText },
-          isActive && { color: isDarkMode ? '#140F0F' : colors.cardBackground },
-          textStyle,
-        ]}
-      >
-        {label}
-      </Text>
+      <Text style={labelStyle}>{label}</Text>
     </TouchableOpacity>
   );
 };
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   text: {
-    fontFamily: 'Georgia',
+    fontFamily: THEME.typography.uppercase.fontFamily,
     fontSize: 13,
     letterSpacing: 0.8,
     fontWeight: '600',

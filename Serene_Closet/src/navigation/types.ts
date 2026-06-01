@@ -1,4 +1,4 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type RootStackParamList = {
   Intro1: undefined;
